@@ -6,14 +6,15 @@ import SimilarCars from '@/components/SimilarCars';
 import { Car } from '@/types/car';
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const car = await autoscout24Client.getCarBySlug(params.slug);
+  const { slug } = await params;
+  const car = await autoscout24Client.getCarBySlug(slug);
   
   if (!car) return {};
   
@@ -36,12 +37,12 @@ export async function generateStaticParams() {
 }
 
 export default async function CarPage({ params }: PageProps) {
-  const car = await autoscout24Client.getCarBySlug(params.slug);
+  const { slug } = await params;
+  const car = await autoscout24Client.getCarBySlug(slug);
   
   if (!car) notFound();
   
-  // Explizite Typisierung für similarCars
-  const similarCars: Car[] = await autoscout24Client.getSimilarCars(car as Car);
+  const similarCars: Car[] = await autoscout24Client.getSimilarCars(car);
 
   return (
     <div className="container mx-auto px-4 py-8">
