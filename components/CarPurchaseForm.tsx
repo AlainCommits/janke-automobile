@@ -66,7 +66,6 @@ export function CarPurchaseForm() {
       accident: "",
       comments: "",
       privacy: false,
-      spamProtection: ""
     },
   });
 
