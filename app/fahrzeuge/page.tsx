@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { getAllCars } from '@/lib/autoscout24';
+import { getAllCars } from '@/lib/mock';
 import { CarCard } from '@/components/CarCard';
 
 export const metadata: Metadata = {

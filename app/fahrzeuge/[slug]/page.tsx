@@ -1,62 +1,55 @@
+//app/fahrzeuge/[slug]/page.tsx
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { MockCars, getCarBySlug, getSimilarCars } from '@/lib/mock';
 import SimilarCars from '@/components/SimilarCars';
 import { Car } from '@/types/car';
-import { getCarBySlug, getSimilarCars, getAllCars } from '@/lib/autoscout24';
 
-interface PageProps {
-  params: { slug: string }; // Entfernt Promise, da wir Mock-Daten nutzen
+type Props = {
+  params: { slug: string };
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const car = getCarBySlug(params.slug);
-
-  if (!car) {
-    return {
-      title: 'Fahrzeug nicht gefunden',
-      description: 'Das angeforderte Fahrzeug konnte nicht gefunden werden.',
-    };
-  }
-
+  
+  if (!car) return {};
+  
   return {
-    title: `${car.brand} ${car.model} ${car.year} | Gebrauchtwagen Details`,
+    title: `${car.brand} ${car.model} ${car.year} | Fahrzeugdetails`,
     description: car.description,
     openGraph: {
       images: car.images,
-      title: `${car.brand} ${car.model} ${car.year}`,
-      description: car.description,
     },
   };
 }
 
 export async function generateStaticParams() {
-  const cars = getAllCars();
-  return cars.map((car: Car) => ({
+  return MockCars.map((car) => ({
     slug: car.slug,
   }));
 }
 
-export default async function CarPage({ params }: PageProps) {
+export default function CarPage({ params }: Props) {
   const car = getCarBySlug(params.slug);
-
+  
   if (!car) notFound();
-
-  const similarCars: Car[] = getSimilarCars(car);
+  
+  const similarCars = getSimilarCars(car);
 
   return (
     <div className="container mx-auto px-4 py-8">
       <article className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="relative h-[400px]">
           <Image
-            src={car.images[0] }
+            src={car.images[0]}
             alt={`${car.brand} ${car.model}`}
             fill
             className="object-cover rounded-lg"
             priority
           />
         </div>
-
+        
         <div>
           <h1 className="text-4xl font-bold mb-4">
             {car.brand} {car.model} {car.year}

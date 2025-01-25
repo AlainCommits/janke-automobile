@@ -9,7 +9,7 @@ interface Seller {
 }
 
 // 🚀 Mock-Daten für Fahrzeuge
-export const MOCK_CARS: Car[] = [
+export const MockCars: Car[] = [
   {
     id: '1',
     slug: 'mercedes-amg-2023',
@@ -129,15 +129,15 @@ export const MOCK_CARS: Car[] = [
 
 // 🚀 Funktionen zur Datenabfrage (nur Mock-Daten)
 export function getAllCars(): Car[] {
-  return MOCK_CARS;
+  return MockCars;
 }
 
 export function getCarBySlug(slug: string): Car | null {
-  return MOCK_CARS.find(car => car.slug === slug) || null;
+  return MockCars.find(car => car.slug === slug) || null;
 }
 
 export function getSimilarCars(car: Car): Car[] {
-  return MOCK_CARS
+  return MockCars
     .filter(c => c.slug !== car.slug && c.brand === car.brand)
     .slice(0, 3);
 }
