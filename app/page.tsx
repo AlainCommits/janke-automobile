@@ -3,7 +3,6 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { autoscout24Client } from '@/lib/autoscout24';
 import { CarCard } from '@/components/CarCard';
 import { CarPurchaseForm } from '@/components/CarPurchaseForm';
 import { ServicesSection } from '@/components/ServicesSection';
@@ -24,7 +23,6 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const featuredCars = await autoscout24Client.getAllCars({ limit: 6 });
   return (
     <main className="flex-1 pt-16">
       {/* Hero Section */}

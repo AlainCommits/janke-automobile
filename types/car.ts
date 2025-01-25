@@ -1,4 +1,11 @@
 //types/car.ts
+
+export interface Seller {
+  name: string;
+  location: string;
+  sellerType: "dealer" | "private"; // ❗️Hier hinzugefügt
+  rating: number;
+}
 export interface Car {
   id: string;
   slug: string;
@@ -15,4 +22,6 @@ export interface Car {
   features?: string[];
   color?: string;
   firstRegistration?: string;
+  seller?: Seller;
 }
+

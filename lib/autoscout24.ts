@@ -1,23 +1,15 @@
-//lib/autoscout24.ts
 import { Car } from '@/types/car';
 
-// Interface für Filter-Optionen
-interface Filters {
-  brand?: string;
-  priceMin?: number;
-  priceMax?: number;
-  limit?: number; // Für Pagination/Limiting
+// Interface für einen Verkäufer (ehemals "dealer")
+interface Seller {
+  name: string;
+  location: string;
+  sellerType: string; // "dealer" oder "private"
+  rating: number;
 }
 
-// API Interface Definition
-interface AutoScout24API {
-  getAllCars: (filters?: Filters) => Promise<Car[]>;
-  getCarBySlug: (slug: string) => Promise<Car | null>;
-  getSimilarCars: (car: Car) => Promise<Car[]>;
-}
-
-// Mock-Daten
-const MOCK_CARS: Car[] = [
+// 🚀 Mock-Daten für Fahrzeuge
+export const MOCK_CARS: Car[] = [
   {
     id: '1',
     slug: 'mercedes-amg-2023',
@@ -29,10 +21,7 @@ const MOCK_CARS: Car[] = [
     fuelType: 'Benzin',
     transmission: 'Automatik',
     power: 476,
-    images: [
-      '/images/cars/mercedes.webp',
-      '/images/cars/amg.html'
-    ],
+    images: ['/images/cars/mercedes.webp'],
     description: 'Mercedes-AMG GT in perfektem Zustand...',
     features: ['LED-Scheinwerfer', 'Navigationssystem', 'Performance Sitze'],
     color: 'Obsidianschwarz Metallic',
@@ -40,7 +29,7 @@ const MOCK_CARS: Car[] = [
     seller: {
       name: 'Mercedes-Benz Center',
       location: 'Hamburg',
-      type: 'dealer',
+      sellerType: 'dealer',
       rating: 4.9
     }
   },
@@ -55,9 +44,7 @@ const MOCK_CARS: Car[] = [
     fuelType: 'Benzin',
     transmission: 'Automatik',
     power: 510,
-    images: [
-      '/images/cars/bmw.jpeg'
-    ],
+    images: ['/images/cars/bmw.jpeg'],
     description: 'BMW M4 Competition mit M Driver\'s Package...',
     features: ['M Sport Sitze', 'Laserlicht', 'Harman Kardon'],
     color: 'San Marino Blau',
@@ -65,7 +52,7 @@ const MOCK_CARS: Car[] = [
     seller: {
       name: 'BMW M Studio',
       location: 'München',
-      type: 'dealer',
+      sellerType: 'dealer',
       rating: 4.8
     }
   },
@@ -80,9 +67,7 @@ const MOCK_CARS: Car[] = [
     fuelType: 'Benzin',
     transmission: 'Automatik',
     power: 640,
-    images: [
-      '/images/cars/lambo.webp'
-    ],
+    images: ['/images/cars/lambo.webp'],
     description: 'Lamborghini Huracán EVO...',
     features: ['Carbon Keramik Bremsen', 'Lift System', 'Sport Auspuff'],
     color: 'Verde Mantis',
@@ -90,7 +75,7 @@ const MOCK_CARS: Car[] = [
     seller: {
       name: 'Luxury Cars Hamburg',
       location: 'Hamburg',
-      type: 'dealer',
+      sellerType: 'dealer',
       rating: 5.0
     }
   },
@@ -105,9 +90,7 @@ const MOCK_CARS: Car[] = [
     fuelType: 'Diesel',
     transmission: 'Automatik',
     power: 272,
-    images: [
-      '/images/cars/jeep.jpeg'
-    ],
+    images: ['/images/cars/jeep.jpeg'],
     description: 'Jeep Wrangler Unlimited Rubicon...',
     features: ['Hardtop', 'Off-Road Paket', 'LED Paket'],
     color: 'Granite Crystal',
@@ -115,7 +98,7 @@ const MOCK_CARS: Car[] = [
     seller: {
       name: 'Jeep Center Berlin',
       location: 'Berlin',
-      type: 'dealer',
+      sellerType: 'dealer',
       rating: 4.7
     }
   },
@@ -130,9 +113,7 @@ const MOCK_CARS: Car[] = [
     fuelType: 'Benzin',
     transmission: 'Automatik',
     power: 178,
-    images: [
-      '/images/cars/mini.jpeg'
-    ],
+    images: ['/images/cars/mini.jpeg'],
     description: 'MINI Cooper S mit John Cooper Works Paket...',
     features: ['Panoramadach', 'Harman Kardon', 'Sport Paket'],
     color: 'British Racing Green',
@@ -140,185 +121,23 @@ const MOCK_CARS: Car[] = [
     seller: {
       name: 'MINI Store Frankfurt',
       location: 'Frankfurt',
-      type: 'dealer',
+      sellerType: 'dealer',
       rating: 4.6
     }
   }
 ];
 
-class AutoScout24Client implements AutoScout24API {
-  private apiKey: string;
-  private baseUrl: string;
-  private isProduction: boolean;
-
-  constructor() {
-    this.apiKey = process.env.AUTOSCOUT24_API_KEY || '';
-    this.baseUrl = 'https://api.autoscout24.com/v1';
-    this.isProduction = process.env.NODE_ENV === 'production';
-  }
-
-  async getAllCars(filters?: Filters): Promise<Car[]> {
-    if (!this.isProduction) {
-      return this.getMockCars(filters);
-    }
-
-    try {
-      const queryParams = new URLSearchParams();
-      if (filters?.brand) queryParams.append('brand', filters.brand);
-      if (filters?.priceMin) queryParams.append('priceFrom', filters.priceMin.toString());
-      if (filters?.priceMax) queryParams.append('priceTo', filters.priceMax.toString());
-      if (filters?.limit) queryParams.append('limit', filters.limit.toString());
-
-      const response = await fetch(`${this.baseUrl}/cars?${queryParams.toString()}`, {
-        headers: {
-          'Authorization': `Bearer ${this.apiKey}`
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch cars');
-      }
-
-      const cars = await response.json();
-      return this.formatCars(cars);
-    } catch (error) {
-      console.error('Error fetching cars:', error);
-      return this.getMockCars(filters);
-    }
-  }
-
-  async getCarBySlug(slug: string): Promise<Car | null> {
-    if (!this.isProduction) {
-      return MOCK_CARS.find(car => car.slug === slug) || null;
-    }
-
-    try {
-      const response = await fetch(`${this.baseUrl}/cars/${slug}`, {
-        headers: {
-          'Authorization': `Bearer ${this.apiKey}`
-        }
-      });
-
-      if (!response.ok) return null;
-
-      const car = await response.json();
-      return this.formatCar(car);
-    } catch (error) {
-      console.error('Error fetching car:', error);
-      return MOCK_CARS.find(car => car.slug === slug) || null;
-    }
-  }
-
-  async getSimilarCars(car: Car): Promise<Car[]> {
-    if (!this.isProduction) {
-      return MOCK_CARS
-        .filter(c => 
-          c.id !== car.id && 
-          c.brand === car.brand &&
-          Math.abs(c.price - car.price) <= 5000
-        )
-        .slice(0, 3);
-    }
-
-    try {
-      const queryParams = new URLSearchParams({
-        brand: car.brand,
-        priceFrom: (car.price * 0.8).toString(),
-        priceTo: (car.price * 1.2).toString(),
-        limit: '3'
-      });
-
-      const response = await fetch(
-        `${this.baseUrl}/cars?${queryParams.toString()}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${this.apiKey}`
-          }
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch similar cars');
-      }
-
-      const cars = await response.json();
-      return this.formatCars(cars)
-        .filter(c => c.id !== car.id)
-        .slice(0, 3);
-    } catch (error) {
-      console.error('Error fetching similar cars:', error);
-      return this.getMockCars()
-        .then(cars => cars
-          .filter(c => 
-            c.id !== car.id && 
-            c.brand === car.brand &&
-            Math.abs(c.price - car.price) <= 5000
-          )
-          .slice(0, 3)
-        );
-    }
-  }
-
-  private getMockCars(filters?: Filters): Promise<Car[]> {
-    let filteredCars = [...MOCK_CARS];
-
-    if (filters?.brand) {
-      filteredCars = filteredCars.filter(car => 
-        car.brand.toLowerCase() === filters.brand!.toLowerCase()
-      );
-    }
-
-    if (filters?.priceMin) {
-      filteredCars = filteredCars.filter(car => 
-        car.price >= filters.priceMin!
-      );
-    }
-
-    if (filters?.priceMax) {
-      filteredCars = filteredCars.filter(car => 
-        car.price <= filters.priceMax!
-      );
-    }
-
-    if (filters?.limit) {
-      filteredCars = filteredCars.slice(0, filters.limit);
-    }
-
-    return Promise.resolve(filteredCars);
-  }
-
-  private formatCar(car: any): Car {
-    return {
-      id: car.id,
-      slug: this.generateSlug(car),
-      brand: car.brand,
-      model: car.model,
-      year: car.year,
-      price: car.price,
-      mileage: car.mileage,
-      fuelType: car.fuelType,
-      transmission: car.transmission,
-      power: car.power,
-      images: car.images,
-      description: car.description,
-      features: car.features,
-      color: car.color,
-      firstRegistration: car.firstRegistration,
-      seller: car.seller
-    };
-  }
-
-  private formatCars(cars: any[]): Car[] {
-    return cars.map(car => this.formatCar(car));
-  }
-
-  private generateSlug(car: any): string {
-    return `${car.brand}-${car.model}-${car.year}`
-      .toLowerCase()
-      .replace(/\s+/g, '-')
-      .replace(/[^a-z0-9-]/g, '');
-  }
+// 🚀 Funktionen zur Datenabfrage (nur Mock-Daten)
+export function getAllCars(): Car[] {
+  return MOCK_CARS;
 }
 
-// Singleton-Instanz exportieren
-export const autoscout24Client = new AutoScout24Client();
+export function getCarBySlug(slug: string): Car | null {
+  return MOCK_CARS.find(car => car.slug === slug) || null;
+}
+
+export function getSimilarCars(car: Car): Car[] {
+  return MOCK_CARS
+    .filter(c => c.slug !== car.slug && c.brand === car.brand)
+    .slice(0, 3);
+}

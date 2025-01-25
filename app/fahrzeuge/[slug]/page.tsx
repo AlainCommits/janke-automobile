@@ -1,26 +1,24 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { autoscout24Client } from '@/lib/autoscout24';
 import SimilarCars from '@/components/SimilarCars';
 import { Car } from '@/types/car';
+import { getCarBySlug, getSimilarCars, getAllCars } from '@/lib/autoscout24';
 
 interface PageProps {
-  params: Promise<{ slug: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  params: { slug: string }; // Entfernt Promise, da wir Mock-Daten nutzen
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const car = await autoscout24Client.getCarBySlug(slug);
-  
+  const car = getCarBySlug(params.slug);
+
   if (!car) {
     return {
       title: 'Fahrzeug nicht gefunden',
       description: 'Das angeforderte Fahrzeug konnte nicht gefunden werden.',
     };
   }
-  
+
   return {
     title: `${car.brand} ${car.model} ${car.year} | Gebrauchtwagen Details`,
     description: car.description,
@@ -33,19 +31,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export async function generateStaticParams() {
-  const cars = await autoscout24Client.getAllCars();
+  const cars = getAllCars();
   return cars.map((car: Car) => ({
     slug: car.slug,
   }));
 }
 
 export default async function CarPage({ params }: PageProps) {
-  const { slug } = await params;
-  const car = await autoscout24Client.getCarBySlug(slug);
-  
+  const car = getCarBySlug(params.slug);
+
   if (!car) notFound();
-  
-  const similarCars: Car[] = await autoscout24Client.getSimilarCars(car);
+
+  const similarCars: Car[] = getSimilarCars(car);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -59,7 +56,7 @@ export default async function CarPage({ params }: PageProps) {
             priority
           />
         </div>
-        
+
         <div>
           <h1 className="text-4xl font-bold mb-4">
             {car.brand} {car.model} {car.year}
