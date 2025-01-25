@@ -5,11 +5,15 @@ import { autoscout24Client } from '@/lib/autoscout24';
 import SimilarCars from '@/components/SimilarCars';
 import { notFound } from 'next/navigation';
 
-interface Props {
-  params: { slug: string }
+// Korrekte Props-Definition für Next.js 13+
+interface PageProps {
+  params: {
+    slug: string;
+  };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const car = await autoscout24Client.getCarBySlug(params.slug);
   
   if (!car) return {};
@@ -30,7 +34,7 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function CarPage({ params }: Props) {
+export default async function CarPage({ params, searchParams }: PageProps) {
   const car = await autoscout24Client.getCarBySlug(params.slug);
   
   if (!car) notFound();
