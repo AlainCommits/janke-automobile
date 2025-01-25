@@ -3,7 +3,7 @@
 export interface Seller {
   name: string;
   location: string;
-  sellerType: "dealer" | "private"; // ❗️Hier hinzugefügt
+  sellerType: "dealer" | "private";
   rating: number;
 }
 export interface Car {

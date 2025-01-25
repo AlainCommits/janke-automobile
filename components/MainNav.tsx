@@ -42,17 +42,18 @@ export function MainNav() {
     <>
       {/* Logo Stripe - immer sticky */}
       <div className="fixed top-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-sm z-50 border-b">
-        <div className="container mx-auto h-full flex items-center justify-center px-4">
-          <Link href="/" className="relative w-48 h-12">
-            <Image
-              src="/images/logo.png"
-              alt="Logo"
-              fill
-              className="object-contain"
-              priority
-            />
-          </Link>
-          
+        <div className="container mx-auto h-full flex items-center justify-between px-4">
+          <div className="flex-1 flex items-center justify-center">
+            <Link href="/" className="relative w-48 h-12">
+              <Image
+                src="/images/logo.png"
+                alt="Logo"
+                fill
+                className="object-contain"
+                priority
+              />
+            </Link>
+          </div>
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="lg:hidden p-2 hover:bg-gray-100 rounded-md"
@@ -81,7 +82,8 @@ export function MainNav() {
                   <HoverBorderGradient
                     containerClassName={cn(
                       "rounded-md transition-all duration-300 hover:scale-105 w-full lg:w-auto",
-                      pathname === item.href && "shadow-[0_0_50px_rgba(191,30,44,0.6)]"
+                      // Remove the red shadow effect in mobile view
+                      pathname === item.href && !isSticky && "shadow-[0_0_50px_rgba(191,30,44,0.6)]"
                     )}
                     className={cn(
                       "px-4 py-2 text-sm font-medium transition-all duration-300 text-center lg:text-left",
