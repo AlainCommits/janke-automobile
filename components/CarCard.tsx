@@ -57,9 +57,9 @@ export function CarCard({ car }: CarCardProps) {
 
         <CardFooter className="p-4 pt-0">
           <div className="flex items-center justify-between w-full">
-            <div className="text-sm text-muted-foreground">
-              {car.seller.location}
-            </div>
+          <div className="text-sm text-muted-foreground">
+            {car.seller?.location || "Standort unbekannt"}
+          </div>
             <Button variant="secondary">
               Details ansehen
             </Button>

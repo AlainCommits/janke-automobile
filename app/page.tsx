@@ -14,8 +14,8 @@ import Hero1 from '../components/heroes/Hero1';
 import Hero2 from '../components/heroes/Hero3';
 import Hero3 from '../components/heroes/Hero3';
 import { AutoScoutSection } from '@/components/AutoScoutSection';
-import Video from 'next-video';
-import ad from '/videos/hero.mp4'
+// import Video from 'next-video';
+// import ad from '/videos/hero.mp4'
 
 export const metadata: Metadata = {
   title: 'AutoScout24 Marketplace | Ihr Gebrauchtwagen-Portal',
@@ -35,9 +35,9 @@ export default async function HomePage() {
       <MainNav />
       {/* Featured Cars Section */}
       <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
+        {/* <div className="container mx-auto px-4">
          <Video src={ad}/>
-        </div>
+        </div> */}
       </section>
 
 

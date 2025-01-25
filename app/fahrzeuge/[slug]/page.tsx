@@ -49,7 +49,7 @@ export default async function CarPage({ params }: PageProps) {
       <article className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="relative h-[400px]">
           <Image
-            src={car.images[0]}
+            src={car.images[0] }
             alt={`${car.brand} ${car.model}`}
             fill
             className="object-cover rounded-lg"
