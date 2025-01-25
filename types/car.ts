@@ -9,16 +9,10 @@ export interface Car {
   mileage: number;
   fuelType: string;
   transmission: string;
-  power: number; // PS
-  images: string[];
+  power: number;
   description: string;
-  features: string[];
-  color: string;
-  firstRegistration: string;
-  seller: {
-    name: string;
-    location: string;
-    type: 'private' | 'dealer';
-    rating?: number;
-  };
+  images: string[];
+  features?: string[];
+  color?: string;
+  firstRegistration?: string;
 }
