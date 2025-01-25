@@ -6,17 +6,20 @@ import SimilarCars from '@/components/SimilarCars';
 import { Car } from '@/types/car';
 
 interface PageProps {
-  params: Promise<{
-    slug: string;
-  }>;
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const car = await autoscout24Client.getCarBySlug(slug);
   
-  if (!car) return {};
+  if (!car) {
+    return {
+      title: 'Fahrzeug nicht gefunden',
+      description: 'Das angeforderte Fahrzeug konnte nicht gefunden werden.',
+    };
+  }
   
   return {
     title: `${car.brand} ${car.model} ${car.year} | Gebrauchtwagen Details`,
