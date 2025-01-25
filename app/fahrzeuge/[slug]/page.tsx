@@ -4,19 +4,21 @@ import { autoscout24Client } from '@/lib/autoscout24';
 import SimilarCars from '@/components/SimilarCars';
 import { notFound } from 'next/navigation';
 
-// Korrekte Definition der Props
 interface CarPageProps {
-  params: {
-    slug: string;
-  };
-  searchParams?: { [key: string]: string | string[] | undefined };
+  params: Promise<{ slug: string }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-// Metadata-Funktion mit korrektem Typ
 export async function generateMetadata({ params }: CarPageProps): Promise<Metadata> {
-  const car = await autoscout24Client.getCarBySlug(params.slug);
+  const { slug } = await params;
+  const car = await autoscout24Client.getCarBySlug(slug);
 
-  if (!car) return { title: 'Fahrzeug nicht gefunden', description: 'Dieses Fahrzeug ist nicht verfügbar.' };
+  if (!car) {
+    return {
+      title: 'Fahrzeug nicht gefunden',
+      description: 'Dieses Fahrzeug ist nicht verfügbar.',
+    };
+  }
 
   return {
     title: `${car.brand} ${car.model} ${car.year} | AutoScout24`,
@@ -27,7 +29,6 @@ export async function generateMetadata({ params }: CarPageProps): Promise<Metada
   };
 }
 
-// Statische Routen generieren
 export async function generateStaticParams() {
   const cars = await autoscout24Client.getAllCars();
   return cars.map((car) => ({
@@ -35,9 +36,9 @@ export async function generateStaticParams() {
   }));
 }
 
-// Hauptkomponente der Fahrzeugseite
 export default async function CarPage({ params }: CarPageProps) {
-  const car = await autoscout24Client.getCarBySlug(params.slug);
+  const { slug } = await params;
+  const car = await autoscout24Client.getCarBySlug(slug);
 
   if (!car) return notFound();
 
@@ -48,7 +49,7 @@ export default async function CarPage({ params }: CarPageProps) {
       <article className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="relative h-[400px]">
           <Image
-            src={car.images?.[0] || '/fallback-car.jpg'} // Fallback-Bild für Fehlerhandling
+            src={car.images?.[0] || '/fallback-car.jpg'}
             alt={`${car.brand} ${car.model}`}
             fill
             className="object-cover rounded-lg"
@@ -68,7 +69,6 @@ export default async function CarPage({ params }: CarPageProps) {
         </div>
       </article>
 
-      {/* JSON-LD für SEO */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
