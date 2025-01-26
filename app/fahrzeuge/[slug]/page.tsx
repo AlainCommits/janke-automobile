@@ -3,11 +3,11 @@ import { carService } from "@/lib/mock";
 import { CarCard } from "@/components/CarCard";
 
 interface PageProps {
-  params: { slug: string };
+  params: { slug: string }; // ✅ Korrekte Typisierung
   searchParams?: Record<string, string | string[] | undefined>;
 }
 
-// 🏷 Dynamisches Metadata-Rendering basierend auf dem Fahrzeug
+// 🏷 Dynamisches Metadata-Rendering für SEO
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const car = await carService.getCarBySlug(params.slug);
 
@@ -24,14 +24,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-// 🏗 Statische Seiten-Generierung (SSG) für bessere Performance
-export async function generateStaticParams() {
-  const cars = carService.getAllCars();
-  return cars.map((car) => ({ slug: car.slug }));
+// ✅ Statische Seiten-Generierung (SSG) für Next.js
+export async function generateStaticParams(): Promise<{ params: { slug: string } }[]> {
+  const cars = carService.getAllCars(); // Falls asynchron, async/await verwenden
+  return cars.map((car) => ({ params: { slug: car.slug } })); // ✅ Richtige Struktur
 }
 
 // 📌 Fahrzeug-Detailseite
-export default async function CarPage({ params }: { params: { slug: string } }) {
+export default async function CarPage({ params }: PageProps) {
   const car = await carService.getCarBySlug(params.slug);
 
   if (!car) {
