@@ -72,7 +72,11 @@ export function MainNav() {
       {/* Hauptnavigation */}
       <nav className={cn(
         "w-full bg-white/95 backdrop-blur-sm border-b transition-all duration-300",
-        isSticky ? "fixed top-16 left-0 right-0 z-40" : "relative",
+        isSticky 
+          ? "fixed top-16 left-0 right-0 z-40" 
+          : isOpen 
+            ? "fixed top-16 left-0 right-0 z-40" // Mobile menu when open
+            : "absolute top-[90dvh] left-0 right-0 z-40", // Desktop initial position
         isOpen ? "block" : "hidden lg:block"
       )}>
         <div className="container mx-auto px-4">
@@ -82,14 +86,14 @@ export function MainNav() {
                 <li key={item.href} className="w-full lg:w-auto">
                   <HoverBorderGradient
                     containerClassName={cn(
-                      "rounded-md transition-all duration-300 hover:scale-105 w-full lg:w-auto",
+                      "rounded-md transition-all duration-300 hover:scale-110 w-full lg:w-auto",
                       pathname === item.href && "shadow-[0_0_50px_rgba(191,30,44,0.6)]"
                     )}
                     className={cn(
                       "px-4 py-2 text-sm font-medium transition-all duration-300 text-center lg:text-left",
                       pathname === item.href 
                         ? "text-[#BF1E2C]" 
-                        : "text-slate-600",
+                        : "text-slate-200",
                       "hover:text-[#BF1E2C]"
                     )}
                     duration={0.5}
