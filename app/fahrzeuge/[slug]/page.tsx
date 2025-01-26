@@ -13,8 +13,15 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  if (!params?.slug) {
+    return {
+      title: 'Fahrzeug nicht gefunden',
+      description: 'Das angeforderte Fahrzeug konnte nicht gefunden werden.',
+    };
+  }
+
   const car = await getCarBySlug(params.slug);
-  
+
   if (!car) {
     return {
       title: 'Fahrzeug nicht gefunden',
@@ -28,8 +35,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+
 // Make sure the component is async and properly typed
-export default async function CarPage({ params, searchParams }: Props) {
+export default async function CarPage({ params }: Props) {
+  if (!params?.slug) {
+    return <div>Fahrzeug nicht gefunden</div>;
+  }
+
   const car = await getCarBySlug(params.slug);
 
   if (!car) {
