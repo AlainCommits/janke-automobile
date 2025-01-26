@@ -44,13 +44,13 @@ export function MainNav() {
     <>
       {/* Logo Stripe - immer sticky */}
       <div className="fixed top-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-sm z-50 border-b">
-        <div className="container mx-auto w-28 lg:w-full h-full flex items-center justify-center px-4">
+        <div className="container mx-auto w-28 md:w-48 h-full flex items-center justify-center px-4">
           <Link href="/" className="relative w-48 h-12">
             <Image
               src="/images/logo.png"
               alt="Logo"
               fill
-              className="object-cover"
+              className="object-cover md:object-contain"
               priority
             />
           </Link>
