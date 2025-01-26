@@ -1,17 +1,20 @@
-// /Users/alonondanse/janke-auto/app/cars/[slug]/page.tsx
+// /Users/alonondanse/janke-auto/app/fahrzeuge/[slug]/page.tsx
 
 import { getCarBySlug } from '@/lib/mock';
 import { CarCard } from '@/components/CarCard';
 import { Metadata } from 'next';
 
-type Props = {
+// Update the Props type to match NextJS 13+ requirements
+interface Props {
   params: {
     slug: string;
   };
-};
+  searchParams: { [key: string]: string | string[] | undefined };
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const car = getCarBySlug(params.slug);
+  const car = await getCarBySlug(params.slug);
+  
   if (!car) {
     return {
       title: 'Fahrzeug nicht gefunden',
@@ -25,8 +28,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function CarPage({ params }: Props) {
-  const car = getCarBySlug(params.slug);
+// Make sure the component is async and properly typed
+export default async function CarPage({ params, searchParams }: Props) {
+  const car = await getCarBySlug(params.slug);
 
   if (!car) {
     return <div>Fahrzeug nicht gefunden</div>;
