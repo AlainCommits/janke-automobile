@@ -4,24 +4,14 @@ import { getCarBySlug } from '@/lib/mock';
 import { CarCard } from '@/components/CarCard';
 import { Metadata } from 'next';
 
-// Update the Props type to match NextJS 13+ requirements
-interface Props {
-  params: {
-    slug: string;
-  };
-  searchParams: { [key: string]: string | string[] | undefined };
+type PageProps = {
+  params: { slug: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  if (!params?.slug) {
-    return {
-      title: 'Fahrzeug nicht gefunden',
-      description: 'Das angeforderte Fahrzeug konnte nicht gefunden werden.',
-    };
-  }
-
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const car = await getCarBySlug(params.slug);
-
+  
   if (!car) {
     return {
       title: 'Fahrzeug nicht gefunden',
@@ -30,18 +20,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${car.brand} ${car.model} | AutoScout24 Marketplace`,
+    title: `${car.brand} ${car.model} | Janke-Automobile`,
     description: car.description,
   };
 }
 
-
-// Make sure the component is async and properly typed
-export default async function CarPage({ params }: Props) {
-  if (!params?.slug) {
-    return <div>Fahrzeug nicht gefunden</div>;
-  }
-
+export default async function CarPage({ params }: PageProps) {
   const car = await getCarBySlug(params.slug);
 
   if (!car) {
