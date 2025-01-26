@@ -1,15 +1,34 @@
-import { Car } from '@/types/car';
+// /Users/alonondanse/janke-auto/lib/mock.ts
 
-// Interface für einen Verkäufer (ehemals "dealer")
-interface Seller {
+// Typdefinitionen
+export interface Seller {
   name: string;
   location: string;
-  sellerType: string; // "dealer" oder "private"
+  sellerType: "dealer" | "private";
   rating: number;
 }
 
-// 🚀 Mock-Daten für Fahrzeuge
-export const MockCars: Car[] = [
+export interface Car {
+  id: string;
+  slug: string;
+  brand: string;
+  model: string;
+  year: number;
+  price: number;
+  mileage: number;
+  fuelType: "Benzin" | "Diesel" | "Elektro" | "Hybrid";
+  transmission: "Automatik" | "Manuell";
+  power: number;
+  images: string[];
+  description: string;
+  features: string[];
+  color: string;
+  firstRegistration: string;
+  seller: Seller;
+}
+
+// Mock-Daten
+const MOCK_CARS: Car[] = [
   {
     id: '1',
     slug: 'mercedes-amg-2023',
@@ -33,111 +52,47 @@ export const MockCars: Car[] = [
       rating: 4.9
     }
   },
-  {
-    id: '2',
-    slug: 'bmw-m4-2024',
-    brand: 'BMW',
-    model: 'M4 Competition',
-    year: 2024,
-    price: 109900,
-    mileage: 5000,
-    fuelType: 'Benzin',
-    transmission: 'Automatik',
-    power: 510,
-    images: ['/images/cars/bmw.jpeg'],
-    description: 'BMW M4 Competition mit M Driver\'s Package...',
-    features: ['M Sport Sitze', 'Laserlicht', 'Harman Kardon'],
-    color: 'San Marino Blau',
-    firstRegistration: '11/2023',
-    seller: {
-      name: 'BMW M Studio',
-      location: 'München',
-      sellerType: 'dealer',
-      rating: 4.8
-    }
-  },
-  {
-    id: '3',
-    slug: 'lamborghini-huracan-2022',
-    brand: 'Lamborghini',
-    model: 'Huracán',
-    year: 2022,
-    price: 249900,
-    mileage: 8000,
-    fuelType: 'Benzin',
-    transmission: 'Automatik',
-    power: 640,
-    images: ['/images/cars/lambo.webp'],
-    description: 'Lamborghini Huracán EVO...',
-    features: ['Carbon Keramik Bremsen', 'Lift System', 'Sport Auspuff'],
-    color: 'Verde Mantis',
-    firstRegistration: '06/2022',
-    seller: {
-      name: 'Luxury Cars Hamburg',
-      location: 'Hamburg',
-      sellerType: 'dealer',
-      rating: 5.0
-    }
-  },
-  {
-    id: '4',
-    slug: 'jeep-wrangler-2023',
-    brand: 'Jeep',
-    model: 'Wrangler',
-    year: 2023,
-    price: 69900,
-    mileage: 12000,
-    fuelType: 'Diesel',
-    transmission: 'Automatik',
-    power: 272,
-    images: ['/images/cars/jeep.jpeg'],
-    description: 'Jeep Wrangler Unlimited Rubicon...',
-    features: ['Hardtop', 'Off-Road Paket', 'LED Paket'],
-    color: 'Granite Crystal',
-    firstRegistration: '03/2023',
-    seller: {
-      name: 'Jeep Center Berlin',
-      location: 'Berlin',
-      sellerType: 'dealer',
-      rating: 4.7
-    }
-  },
-  {
-    id: '5',
-    slug: 'mini-cooper-2024',
-    brand: 'MINI',
-    model: 'Cooper S',
-    year: 2024,
-    price: 39900,
-    mileage: 1000,
-    fuelType: 'Benzin',
-    transmission: 'Automatik',
-    power: 178,
-    images: ['/images/cars/mini.jpeg'],
-    description: 'MINI Cooper S mit John Cooper Works Paket...',
-    features: ['Panoramadach', 'Harman Kardon', 'Sport Paket'],
-    color: 'British Racing Green',
-    firstRegistration: '12/2023',
-    seller: {
-      name: 'MINI Store Frankfurt',
-      location: 'Frankfurt',
-      sellerType: 'dealer',
-      rating: 4.6
-    }
-  }
+  // ... weitere Autos
 ];
 
-// 🚀 Funktionen zur Datenabfrage (nur Mock-Daten)
-export function getAllCars(): Car[] {
-  return MockCars;
-}
+// Service-Funktionen
+export const carService = {
+  /**
+   * Gibt alle verfügbaren Autos zurück
+   */
+  getAllCars(): Car[] {
+    return MOCK_CARS;
+  },
 
-export async function getCarBySlug(slug: string): Promise<Car | null> {
-  return MockCars.find(car => car.slug === slug) || null;
-}
+  /**
+   * Findet ein Auto anhand seiner Slug-URL
+   */
+  async getCarBySlug(slug: string): Promise<Car | null> {
+    return MOCK_CARS.find(car => car.slug === slug) || null;
+  },
 
-export function getSimilarCars(car: Car): Car[] {
-  return MockCars
-    .filter(c => c.slug !== car.slug && c.brand === car.brand)
-    .slice(0, 3);
-}
+  /**
+   * Findet ähnliche Autos der gleichen Marke
+   */
+  getSimilarCars(car: Car): Car[] {
+    return MOCK_CARS
+      .filter(c => c.slug !== car.slug && c.brand === car.brand)
+      .slice(0, 3);
+  },
+
+  /**
+   * Filtert Autos nach verschiedenen Kriterien
+   */
+  filterCars(options: {
+    brand?: string;
+    maxPrice?: number;
+    fuelType?: Car['fuelType'];
+  }): Car[] {
+    return MOCK_CARS.filter(car => {
+      if (options.brand && car.brand !== options.brand) return false;
+      if (options.maxPrice && car.price > options.maxPrice) return false;
+      if (options.fuelType && car.fuelType !== options.fuelType) return false;
+      return true;
+    });
+  }
+};

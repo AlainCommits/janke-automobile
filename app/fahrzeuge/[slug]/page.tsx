@@ -1,21 +1,20 @@
-// /Users/alonondanse/janke-auto/app/fahrzeuge/[slug]/page.tsx
+import { Metadata } from "next";
+import { carService } from "@/lib/mock";
+import { CarCard } from "@/components/CarCard";
 
-import { getCarBySlug } from '@/lib/mock';
-import { CarCard } from '@/components/CarCard';
-import { Metadata } from 'next';
-
-type PageProps = {
+interface PageProps {
   params: { slug: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: Record<string, string | string[] | undefined>;
 }
 
+// 🏷 Dynamisches Metadata-Rendering basierend auf dem Fahrzeug
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const car = await getCarBySlug(params.slug);
-  
+  const car = await carService.getCarBySlug(params.slug);
+
   if (!car) {
     return {
-      title: 'Fahrzeug nicht gefunden',
-      description: 'Das angeforderte Fahrzeug konnte nicht gefunden werden.',
+      title: "Fahrzeug nicht gefunden",
+      description: "Das angeforderte Fahrzeug konnte nicht gefunden werden.",
     };
   }
 
@@ -25,8 +24,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function CarPage({ params }: PageProps) {
-  const car = await getCarBySlug(params.slug);
+// 🏗 Statische Seiten-Generierung (SSG) für bessere Performance
+export async function generateStaticParams() {
+  const cars = carService.getAllCars();
+  return cars.map((car) => ({ slug: car.slug }));
+}
+
+// 📌 Fahrzeug-Detailseite
+export default async function CarPage({ params }: { params: { slug: string } }) {
+  const car = await carService.getCarBySlug(params.slug);
 
   if (!car) {
     return <div>Fahrzeug nicht gefunden</div>;

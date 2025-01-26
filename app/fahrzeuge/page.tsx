@@ -1,17 +1,16 @@
-// /Users/alonondanse/janke-auto/app/fahrzeuge/page.tsx
-
-import { Metadata } from 'next';
-import { getAllCars } from '@/lib/mock';
-import { CarCard } from '@/components/CarCard';
-import { motion } from 'framer-motion';
+import { Metadata } from "next";
+import { carService } from "@/lib/mock";
+import { CarCard } from "@/components/CarCard";
+import { motion } from "framer-motion";
 
 export const metadata: Metadata = {
-  title: 'Unsere Fahrzeuge | Janke-Automobile',
-  description: 'Entdecken Sie unsere große Auswahl an hochwertigen Gebrauchtwagen. Alle Fahrzeuge sind geprüft und mit Garantie.',
+  title: "Unsere Fahrzeuge | Janke-Automobile",
+  description: "Entdecken Sie unsere große Auswahl an hochwertigen Gebrauchtwagen. Alle Fahrzeuge sind geprüft und mit Garantie.",
 };
 
+// 🚀 Hauptseite für die Fahrzeugübersicht
 export default async function FahrzeugePage() {
-  const cars = await getAllCars();
+  const cars = await carService.getAllCars(); // ✅ Jetzt mit carService
 
   return (
     <main className="container mx-auto px-4 py-16">
