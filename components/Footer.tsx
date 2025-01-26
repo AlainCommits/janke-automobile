@@ -23,7 +23,7 @@ export function Footer() {
                 className="flex items-center space-x-2 hover:text-red-500 transition-colors"
               >
                 <Mail className="h-4 w-4" />
-                <span>info@apaydin-automobile.de</span>
+                <span>janke-automobile@hotmail.de</span>
               </a>
             </div>
           </div>
