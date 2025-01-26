@@ -132,7 +132,7 @@ export function getAllCars(): Car[] {
   return MockCars;
 }
 
-export function getCarBySlug(slug: string): Car | null {
+export async function getCarBySlug(slug: string): Promise<Car | null> {
   return MockCars.find(car => car.slug === slug) || null;
 }
 
