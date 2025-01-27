@@ -3,54 +3,35 @@
 "use client"
 
 import { motion } from 'framer-motion';
-import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
+import { Card } from '@/components/ui/card';
+import { Star } from 'lucide-react';
 
-const testimonials = [
+const reviews = [
   {
-    quote: "Schnelle Abwicklung & Top-Service. Mein Auto verkauft und direkt bezahlt bekommen. Sehr professionell und unkompliziert.",
     name: "Daniel R.",
-    title: "Verkauf perfekt abgewickelt"
+    text: "Schnelle Abwicklung & Top-Service. Mein Auto verkauft und direkt bezahlt bekommen.",
+    rating: 5
   },
   {
-    quote: "Riesige Auswahl an Gebrauchtwagen – super Beratung! Sehr zufrieden mit meinem neuen Auto. Faire Preise und kompetente Mitarbeiter.",
     name: "Lisa M.",
-    title: "Kompetente Beratung"
+    text: "Riesige Auswahl an Gebrauchtwagen – super Beratung!",
+    rating: 5
   },
   {
-    quote: "Faire Preise und ehrliche Beratung. Hier wird man nicht über den Tisch gezogen. Sehr empfehlenswert!",
     name: "Michael K.",
-    title: "Faire Preisgestaltung"
+    text: "Faire Preise und ehrliche Beratung. Hier wird man nicht über den Tisch gezogen.",
+    rating: 5
   },
   {
-    quote: "Toller Service von Anfang bis Ende. Das Team ist sehr professionell und freundlich. Würde jederzeit wieder hier kaufen.",
     name: "Sarah B.",
-    title: "Ausgezeichneter Service"
-  },
-  {
-    quote: "Reibungsloser Ablauf beim Autokauf. Der gesamte Prozess war transparent und kundenorientiert. Kann ich nur weiterempfehlen!",
-    name: "Thomas H.",
-    title: "Problemlose Abwicklung"
-  },
-  {
-    quote: "Sehr zuvorkommend und kompetent. Man fühlt sich gut aufgehoben und ehrlich beraten. Top Autohaus!",
-    name: "Julia W.",
-    title: "Top Kundenservice"
-  },
-  {
-    quote: "Beste Autohandlung in der Region. Faire Preise und top Qualität. Immer wieder gerne!",
-    name: "Marcus P.",
-    title: "Qualität überzeugt"
-  },
-  {
-    quote: "Hervorragender Kundenservice und faire Preisgestaltung. Die Beratung war ausgezeichnet und sehr persönlich.",
-    name: "Andrea K.",
-    title: "Persönliche Beratung"
-  },
+    text: "Toller Service von Anfang bis Ende. Das Team ist sehr professionell und freundlich.",
+    rating: 5
+  }
 ];
 
 export function ReviewsSection() {
   return (
-    <section className="py-24 bg-gradient-to-b from-gray-50">
+    <section className="py-24 overflow-hidden">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -66,15 +47,44 @@ export function ReviewsSection() {
           </p>
         </motion.div>
 
-        <div className="h-[40rem] rounded-md flex flex-col antialiased bg-white dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
-          <InfiniteMovingCards
-            items={testimonials}
-            direction="left"
-            speed="slow"
-            pauseOnHover={true}
-          />
+        <div className="relative overflow-hidden">
+          <div className="flex gap-6 animate-scroll-reverse">
+            {[...reviews, ...reviews].map((review, index) => (
+              <div
+                key={index}
+                className="flex-shrink-0 w-[300px] md:w-[400px]"
+              >
+                <Card className="p-6 h-full hover:shadow-lg transition-shadow bg-white">
+                  <div className="flex mb-4">
+                    {[...Array(review.rating)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                    ))}
+                  </div>
+                  <p className="text-lg mb-4 italic">"{review.text}"</p>
+                  <p className="font-bold">- {review.name}</p>
+                </Card>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes scroll-reverse {
+          0% {
+            transform: translateX(-50%);
+          }
+          100% {
+            transform: translateX(0);
+          }
+        }
+        .animate-scroll-reverse {
+          animation: scroll-reverse 30s linear infinite;
+        }
+        .animate-scroll-reverse:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
     </section>
   );
 }

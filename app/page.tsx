@@ -19,6 +19,7 @@ import { WelcomeSection } from '@/components/modules/WelcomeSection';
 import { ContactSection } from '../components/modules/ContactSection';
 import { ReviewsSection } from '../components/modules/ReviewsSection';
 import { WhyUsSection } from '@/components/modules/WhyUsSection';
+import { ImageSliderSection } from '@/components/modules/ImageSliderSection';
 
 export const metadata: Metadata = {
   title: 'AutoScout24 Marketplace | Ihr Gebrauchtwagen-Portal',
@@ -28,12 +29,11 @@ export const metadata: Metadata = {
 export default async function HomePage() {
   return (
     <main className="flex-1 pt-16">
-       <Hero1 /> 
+       <Hero2 /> 
        <MainNav />
 
       {/* <WelcomeSection /> */}
       <ServicesSection />
-      
       {/* Featured Cars Section */}
       {/* <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
@@ -58,6 +58,7 @@ export default async function HomePage() {
           </Button>
         </div>
       </section>
+      <ImageSliderSection />
       <section className="py-16 bg-gradient-to-b from-primary/10">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-12">
@@ -69,7 +70,7 @@ export default async function HomePage() {
             </p>
           </div>
 
-          <CarPurchaseForm />
+         {/*<CarPurchaseForm />*/} 
           <ContactSection />
           <ReviewsSection />
           <AutoScoutSection />
