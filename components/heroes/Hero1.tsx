@@ -93,7 +93,7 @@ export default function Hero1() {
                   <Button 
                     variant="outline" 
                     size="lg"
-                    className="border-white/20 text-white hover:bg-white/10 text-lg"
+                    className="border-white/20 text-slate-800 hover:bg-white/10 text-lg"
                   >
                     Fahrzeug verkaufen
                   </Button>
@@ -115,7 +115,7 @@ export default function Hero1() {
 
           <div className="w-4/12">
             <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8">
-              <h2 className="text-xl font-bold text-gray-900 mb-2">
+              <h2 className="text-xl font-bold text-slate-800 mb-2">
                 Kontaktieren Sie uns
               </h2>
               <p className="text-gray-600 text-sm mb-6">
