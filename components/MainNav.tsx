@@ -12,14 +12,11 @@ import { Menu, X } from 'lucide-react';
 
 const navItems = [
   { title: "Start", href: "/" },
-  { title: "Leistungen", href: "/leistungen" },
-  { title: "Fahrzeuge", href: "/fahrzeuge" },
-  { title: "Galerie", href: "/galerie" },
-  { title: "Ankauf", href: "/ankauf" },
-  { title: "Bewertungen", href: "/bewertungen" },
-  { title: "Kontakt", href: "/kontakt" },
-  { title: "Anfrage", href: "/anfrage" },
-  { title: "Anfahrt", href: "/anfahrt" },
+  { title: "Leistungen", href: "/#leistungen" },
+  { title: "Galerie", href: "/#galerie" },
+  { title: "Bewertungen", href: "/#bewertungen" },
+  { title: "Kontakt", href: "/#kontakt" },
+  { title: "Fahrzeuge", href: "/#fahrzeuge" },
 ];
 
 export function MainNav() {

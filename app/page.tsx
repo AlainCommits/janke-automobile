@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { CarPurchaseForm } from '@/components/CarPurchaseForm';
-import { ServicesSection } from '@/components/ServicesSection';
+import { ServicesSection } from '@/components/modules/ServicesSection';
 import { MainNav} from '@/components/MainNav';
 import { GradientBorderNav } from '../components/navigation/NavVariants';
 import { Mail, MapPin, Phone } from 'lucide-react';
@@ -12,7 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import Hero1 from '../components/heroes/Hero1';
 import Hero2 from '../components/heroes/Hero2';
 import Hero3 from '../components/heroes/Hero3';
-import { AutoScoutSection } from '@/components/AutoScoutSection';
+import { AutoScoutSection } from '@/components/modules/AutoScoutSection';
 import Video from 'next-video';
 import ad from '/videos/hero.mp4'
 import { WelcomeSection } from '@/components/modules/WelcomeSection';
@@ -43,7 +43,7 @@ export default async function HomePage() {
 
 
       {/* CTA Section */}
-      <section className="py-16 bg-primary text-white border-t-2 border-b-2 border-red-500">
+      <section id="galerie" className="py-16 bg-primary text-white border-t-2 border-b-2 border-red-500">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-6">
             Bereit, Ihr Traumauto zu finden?
@@ -52,7 +52,7 @@ export default async function HomePage() {
             Durchsuchen Sie unsere große Auswahl an Gebrauchtwagen und finden Sie das perfekte Fahrzeug für Ihre Bedürfnisse.
           </p>
           <Button asChild size="lg" variant="secondary">
-            <Link href="/fahrzeuge">
+            <Link href="/#fahrzeuge">
               Jetzt Fahrzeuge entdecken
             </Link>
           </Button>
@@ -65,8 +65,9 @@ export default async function HomePage() {
            
 
          {/*<CarPurchaseForm />*/} 
-          <ContactSection />
+          
           <ReviewsSection />
+          <ContactSection />
           <AutoScoutSection />
         </div>
         {/* </div> */}

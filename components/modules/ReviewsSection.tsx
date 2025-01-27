@@ -31,7 +31,7 @@ const reviews = [
 
 export function ReviewsSection() {
   return (
-    <section className="py-24 overflow-hidden">
+    <section id="bewertungen" className="py-24 overflow-hidden">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

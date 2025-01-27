@@ -10,7 +10,7 @@ import Image from 'next/image';
 
 export function ContactSection() {
   return (
-    <section className="py-24">
+    <section id="kontakt" className="py-24">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

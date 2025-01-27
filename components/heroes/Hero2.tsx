@@ -15,7 +15,8 @@ import {
   DialogDescription,
   DialogHeader,
 } from "@/components/ui/dialog";
-import { CarPurchaseForm } from '@/components/CarPurchaseForm';
+import { CarPurchaseForm } from '@/components/PurchaseForm';
+import Link from 'next/link';
 
 export default function Hero1() {
   const cars = carService.getAllCars();
@@ -78,12 +79,14 @@ export default function Hero1() {
               Große Auswahl an geprüften Gebrauchtwagen von seriösen Händlern
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <Link href="/#fahrzeuge" className="">
               <Button 
                 size="lg" 
-                className="bg-red-600 hover:bg-red-700 text-lg"
+                className="bg-red-600 hover:bg-red-700 text-lg rounded-md"
               >
                 Fahrzeuge durchsuchen
               </Button>
+              </Link>
               <Dialog>
                 <DialogTrigger asChild>
                   <Button 
