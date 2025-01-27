@@ -1,5 +1,4 @@
 //Users/alonondanse/janke-auto/components/modules/ImageSliderSection.tsx
-
 "use client"
 
 import { useState, useEffect } from 'react';
@@ -56,7 +55,7 @@ export function ImageSliderSection() {
           }
         }
         .animate-scroll {
-          animation: scroll 40s linear infinite;
+          animation: scroll 45s linear infinite;
         }
         .animate-scroll:hover {
           animation-play-state: paused;

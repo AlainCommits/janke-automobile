@@ -12,6 +12,40 @@ import {
 import { MapPin, Phone, Mail, MessageCircle } from "lucide-react";
 import Image from "next/image";
 
+// WhatsApp SVG als Komponente
+const WhatsAppIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="w-5 h-5 text-red-600"
+  >
+    <path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21" />
+    <path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1" />
+  </svg>
+);
+
+// AutoScout24 SVG als Komponente
+const AutoScoutIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className="w-5 h-5 text-red-600"
+  >
+    <path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+    <path d="M12 12.75c-1.243 0-2.25-1.007-2.25-2.25S10.757 8.25 12 8.25s2.25 1.007 2.25 2.25-1.007 2.25-2.25 2.25z" />
+  </svg>
+);
+
 export const AnimatedTooltip = ({
   items,
 }: {
@@ -111,31 +145,34 @@ export const contactItems = [
     id: 4,
     name: "WhatsApp",
     designation: "Direkt chatten",
-    icon: (
-      <div className="relative w-6 h-6">
-        <Image
-          src="/images/whatsapp.svg"
-          alt="whatsapp"
-          fill
-          className="object-cover"
-        />
-      </div>
-    ),    href: "https://wa.me/491784684141"
+    icon:  <WhatsAppIcon />,
+    // (
+    //   <div className="relative w-6 h-6">
+    //     <Image
+    //       src="/images/whatsapp.svg"
+    //       alt="whatsapp"
+    //       fill
+    //       className="object-cover"
+    //     />
+    //   </div>
+    // ),    
+    href: "https://wa.me/491784684141"
   },
   {
     id: 5,
     name: "AutoScout24",
     designation: "Unser Händlerprofil",
-    icon: (
-      <div className="relative w-5 h-6">
-        <Image
-          src="/images/autoscout24.svg"
-          alt="AutoScout24"
-          fill
-          className="object-contain"
-        />
-      </div>
-    ),
+    icon: <AutoScoutIcon />,
+    // (
+    //   <div className="relative w-5 h-6">
+    //     <Image
+    //       src="/images/autoscout24.svg"
+    //       alt="AutoScout24"
+    //       fill
+    //       className="object-contain"
+    //     />
+    //   </div>
+    // ),
     href: "https://www.autoscout24.de/haendler/janke-automobile"
   }
 ];

@@ -1,5 +1,4 @@
 //Users/alonondanse/janke-auto/components/modules/ReviewsSection.tsx
-
 "use client"
 
 import { motion } from 'framer-motion';
@@ -79,7 +78,7 @@ export function ReviewsSection() {
           }
         }
         .animate-scroll-reverse {
-          animation: scroll-reverse 30s linear infinite;
+          animation: scroll-reverse 20s linear infinite;
         }
         .animate-scroll-reverse:hover {
           animation-play-state: paused;
