@@ -61,21 +61,15 @@ export default async function HomePage() {
       <ImageSliderSection />
       <section className="py-16 bg-gradient-to-b from-primary/10">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4">
-              Verkaufen Sie Ihr Auto zum besten Preis
-            </h1>
-            <p className="text-xl text-muted-foreground">
-              Schnelle Abwicklung, faire Preise und professioneller Service
-            </p>
-          </div>
+          {/* <div className="max-w-3xl mx-auto text-center mb-12"> */}
+           
 
          {/*<CarPurchaseForm />*/} 
           <ContactSection />
           <ReviewsSection />
           <AutoScoutSection />
-
         </div>
+        {/* </div> */}
       </section>
     </main>
   );

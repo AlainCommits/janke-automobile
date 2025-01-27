@@ -13,8 +13,9 @@ import {
   DialogTrigger,
   DialogTitle,
   DialogDescription,
+  DialogHeader,
 } from "@/components/ui/dialog";
-import { CarPurchaseForm } from '@/components/PurchaseForm';
+import { CarPurchaseForm } from '@/components/CarPurchaseForm';
 
 export default function Hero1() {
   const cars = carService.getAllCars();
@@ -93,14 +94,16 @@ export default function Hero1() {
                     Fahrzeug verkaufen
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[600px]">
-                  <DialogTitle className="text-xl font-bold text-gray-900">
-                    Fahrzeug Ankauf
-                  </DialogTitle>
-                  <DialogDescription className="text-gray-600">
-                    Füllen Sie das Formular aus und wir melden uns zeitnah bei Ihnen.
-                  </DialogDescription>
-                  <CarPurchaseForm />
+                <DialogContent className="sm:max-w-[800px] p-0">
+                  <DialogHeader className="px-6 pt-6">
+                    <DialogTitle>Fahrzeug Ankauf</DialogTitle>
+                    <DialogDescription>
+                      Füllen Sie das Formular aus und wir melden uns zeitnah bei Ihnen.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="px-6 pb-6">
+                    <CarPurchaseForm />
+                  </div>
                 </DialogContent>
               </Dialog>
             </div>
