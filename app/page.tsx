@@ -13,23 +13,21 @@ import Hero1 from '../components/heroes/Hero1';
 import Hero2 from '../components/heroes/Hero2';
 import Hero3 from '../components/heroes/Hero3';
 import { AutoScoutSection } from '@/components/modules/AutoScoutSection';
-import Video from 'next-video';
-import ad from '/videos/hero.mp4'
 import { WelcomeSection } from '@/components/modules/WelcomeSection';
 import { ContactSection } from '../components/modules/ContactSection';
 import { ReviewsSection } from '../components/modules/ReviewsSection';
-import { WhyUsSection } from '@/components/modules/WhyUsSection';
 import { ImageSliderSection } from '@/components/modules/ImageSliderSection';
+import { ContactTooltips } from '@/components/ContactTooltip';
 
 export const metadata: Metadata = {
-  title: 'AutoScout24 Marketplace | Ihr Gebrauchtwagen-Portal',
+  title: 'Janke Automobile | Ihr Gebrauchtwagen-Portal',
   description: 'Finden Sie Ihr Traumauto unter tausenden Gebrauchtwagen. Große Auswahl an geprüften Fahrzeugen von Händlern und Privatanbietern.',
 };
 
 export default async function HomePage() {
   return (
     <main className="flex-1 pt-16">
-       <Hero2 /> 
+       <Hero1 /> 
        <MainNav />
 
       {/* <WelcomeSection /> */}
@@ -40,7 +38,6 @@ export default async function HomePage() {
          <Video src={ad}/>
         </div>
       </section> */}
-
 
       {/* CTA Section */}
       <section id="galerie" className="py-16 bg-primary text-white border-t-2 border-b-2 border-red-500">
@@ -56,6 +53,7 @@ export default async function HomePage() {
               Jetzt Fahrzeuge entdecken
             </Link>
           </Button>
+          <ContactTooltips />
         </div>
       </section>
       <ImageSliderSection />

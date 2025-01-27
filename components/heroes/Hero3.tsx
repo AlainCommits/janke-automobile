@@ -1,102 +1,170 @@
-import { Mail, MapPin, Phone } from 'lucide-react'
-import React from 'react'
-import { Button } from '../ui/button'
-import Link from 'next/link'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
+"use client"
 
-type Props = {}
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { carService } from '@/lib/mock';
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogTitle,
+  DialogDescription,
+  DialogHeader,
+} from "@/components/ui/dialog";
+import { CarPurchaseForm } from '@/components/CarPurchaseForm';
+import Link from 'next/link';
 
-const Hero3 = (props: Props) => {
+export default function Hero3() {
+  const cars = carService.getAllCars();
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % cars.length);
+    }, 500);
+
+    return () => clearInterval(timer);
+  }, [cars.length]);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("Form submitted");
+  };
+
   return (
-    // Variante 3 - Fibonacci Spiral Layout
-    <section className="relative h-[90dvh] bg-black">
-      <div className="container mx-auto h-full relative">
-        <div className="grid grid-cols-2 h-full gap-8">
-          {/* Linke Seite - Titel und Text */}
-          <div className="flex items-center">
-            <div className="text-white space-y-6">
-              <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-                Finden Sie Ihr
-    Traumauto
-              </h1>
-              <p className="text-xl md:text-2xl max-w-xl">
-                Große Auswahl an geprüften Gebrauchtwagen von seriösen Händlern
-              </p>
-              <Button asChild size="lg" className="bg-red-600 hover:bg-red-700">
-                <Link href="/fahrzeuge">
+    <section className="relative min-h-[140dvh] lg:h-[90dvh] bg-black overflow-hidden">
+      <div className="absolute inset-0">
+        {cars.map((car, index) => (
+          <div
+            key={car.id}
+            className="absolute inset-0 w-full h-full transition-opacity duration-1000"
+            style={{
+              opacity: currentSlide === index ? 1 : 0,
+              zIndex: currentSlide === index ? 1 : 0,
+            }}
+          >
+            <Image
+              src={car.images[0]}
+              alt={`${car.brand} ${car.model}`}
+              fill
+              className="object-cover"
+              priority={index === 0}
+            />
+          </div>
+        ))}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/75 to-black/60 z-10" />
+      </div>
+
+      <div className="container mx-auto relative z-10 px-4">
+        <div className="flex flex-col lg:flex-row min-h-[calc(140dvh-2rem)] lg:h-full w-full items-center justify-between py-8 lg:py-0">
+          <div className="w-full lg:w-7/12 xl:w-8/12 text-center bg-slate-600/75 rounded-lg p-8 lg:p-14 lg:text-left space-y-8 mt-16 lg:mt-0">
+            <div className="relative w-48 h-24 mx-auto rounded-full lg:mx-0 mb-8">
+              <Image
+                src="/images/logo.jpg"
+                alt="Logo"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+            
+            <h1 className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight">
+              Janke Automobile
+            </h1>
+            <p className="text-lg md:text-xl lg:text-2xl text-white/90 max-w-2xl">
+              Große Auswahl an geprüften Gebrauchtwagen von seriösen Händlern
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <Link href="/#fahrzeuge">
+                <Button 
+                  size="lg" 
+                  className="bg-red-600 hover:bg-red-700 text-lg"
+                >
                   Fahrzeuge durchsuchen
-                </Link>
-              </Button>
+                </Button>
+              </Link>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button 
+                    variant="outline" 
+                    size="lg"
+                    className="border-white/20 text-white hover:bg-white/10 text-lg"
+                  >
+                    Fahrzeug verkaufen
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[800px] p-0">
+                  <DialogHeader className="px-6 pt-6">
+                    <DialogTitle>Fahrzeug Ankauf</DialogTitle>
+                    <DialogDescription>
+                      Füllen Sie das Formular aus und wir melden uns zeitnah bei Ihnen.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="px-6 pb-6">
+                    <CarPurchaseForm />
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
-    
-          {/* Rechte Seite - Grid für Video und Kontakt */}
-          <div className="grid grid-rows-2 gap-8 h-full mt-24">
-            {/* Video oben */}
-            <div className="relative overflow-hidden rounded-lg">
-              <video 
-                autoPlay 
-                muted 
-                loop 
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover"
-              >
-                <source src="/videos/hero.mp4" type="video/mp4" />
-              </video>
-              <div className="absolute inset-0 bg-gradient-to-br from-black/30 to-transparent" />
-            </div>
-    
-            {/* Kontakt unten */}
-            <div className="bg-white/95 backdrop-blur-sm rounded-lg p-6 space-y-6">
-              <div className="space-y-4">
-                <h2 className="text-xl font-bold text-gray-900">Direktkontakt</h2>
-                <div className="space-y-3">
-                  <a 
-                    href="tel:+491784684141"
-                    className="flex items-center space-x-3 text-lg hover:text-red-600 transition-colors group"
-                  >
-                    <div className="p-2 bg-red-50 rounded-full group-hover:bg-red-100 transition-colors">
-                      <Phone className="h-5 w-5 text-red-600" />
-                    </div>
-                    <span>+49 178 468 4141</span>
-                  </a>
-                  <div className="flex items-start space-x-3">
-                    <div className="p-2 bg-red-50 rounded-full mt-1">
-                      <MapPin className="h-5 w-5 text-red-600" />
-                    </div>
-                    <div>
-                      <p className="font-medium">Wattenscheider Hellweg 4</p>
-                      <p className="text-gray-600">44869 Bochum</p>
-                    </div>
+
+          <div className="w-full lg:w-4/12 mt-8 lg:mt-0">
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 md:p-8">
+              <h2 className="text-xl font-bold text-gray-900 mb-2">
+                Kontaktieren Sie uns
+              </h2>
+              <p className="text-gray-600 text-sm mb-6">
+                Wir beraten Sie gerne persönlich
+              </p>
+
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="name">Name</Label>
+                    <Input 
+                      id="name"
+                      placeholder="Ihr Name"
+                      className="mt-1"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="email">E-Mail</Label>
+                    <Input 
+                      id="email"
+                      type="email"
+                      placeholder="ihre@email.de"
+                      className="mt-1"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="phone">Telefon</Label>
+                    <Input 
+                      id="phone"
+                      type="tel"
+                      placeholder="Ihre Telefonnummer"
+                      className="mt-1"
+                    />
                   </div>
                 </div>
-              </div>
-              
-              <div className="flex gap-4">
+
                 <Button 
-                  asChild 
-                  className="flex-1 bg-red-600 hover:bg-red-700"
+                  type="submit"
+                  className="w-full bg-red-600 hover:bg-red-700"
                 >
-                  <a href="tel:+491784684141">
-                    Jetzt anrufen
-                  </a>
+                  Jetzt kontaktieren
                 </Button>
-                <Button 
-                  asChild 
-                  variant="outline" 
-                  className="flex-1"
-                >
-                  <Link href="/kontakt">
-                    Kontakt
-                  </Link>
-                </Button>
-              </div>
+
+                <p className="text-xs text-gray-500 text-center">
+                  Ihre Daten werden vertraulich behandelt
+                </p>
+              </form>
             </div>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
-
-export default Hero3

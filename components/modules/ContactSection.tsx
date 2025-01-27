@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import { AnimatedButton } from '../ui/animated-button';
 import Image from 'next/image';
+import { ContactTooltips } from '../ContactTooltip';
 
 export function ContactSection() {
   return (
@@ -27,7 +28,7 @@ export function ContactSection() {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          {/* Kontaktinformationen mit Hintergrundbild */}
+          {/* Linke Seite mit Logo, Tooltips und Öffnungszeiten */}
           <Card className="relative overflow-hidden">
             <div className="absolute inset-0 z-0">
               <Image
@@ -37,33 +38,45 @@ export function ContactSection() {
                 className="object-cover opacity-20"
               />
             </div>
-            <div className="relative z-10 p-8 backdrop-blur-sm">
-              <h3 className="text-2xl font-bold mb-6 text-primary">Unsere Kontaktdaten</h3>
-              <div className="space-y-6">
-                <div className="flex items-center space-x-3 bg-white/80 p-3 rounded-lg backdrop-blur-sm">
-                  <MapPin className="w-5 h-5 text-primary flex-shrink-0" />
-                  <p>Wattenscheider Hellweg 4, 44869 Bochum</p>
+            <div className="relative z-10 p-8 backdrop-blur-sm space-y-8">
+              {/* Logo */}
+              <div className="relative w-48 h-24 mx-auto">
+                <Image
+                  src="/images/logo.jpg"
+                  alt="Logo"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+
+              {/* Contact Tooltips */}
+              <div className="py-6">
+                <ContactTooltips />
+              </div>
+
+              {/* Öffnungszeiten */}
+              <div className="bg-white/80 rounded-lg p-6 backdrop-blur-sm">
+                <div className="flex items-center gap-3 mb-4">
+                  <Clock className="w-5 h-5 text-red-600" />
+                  <h3 className="font-semibold text-lg">Öffnungszeiten</h3>
                 </div>
-                <div className="flex items-center space-x-3 bg-white/80 p-3 rounded-lg backdrop-blur-sm">
-                  <Phone className="w-5 h-5 text-primary flex-shrink-0" />
-                  <p>01784684141</p>
-                </div>
-                <div className="flex items-center space-x-3 bg-white/80 p-3 rounded-lg backdrop-blur-sm">
-                  <Mail className="w-5 h-5 text-primary flex-shrink-0" />
-                  <p>janke-automobile@hotmail.de</p>
-                </div>
-                <div className="flex items-center space-x-3 bg-white/80 p-3 rounded-lg backdrop-blur-sm">
-                  <Clock className="w-5 h-5 text-primary flex-shrink-0" />
-                  <div>
-                    <p>Mo.–Fr. 9:00 – 17:00 Uhr</p>
-                    <p>Sa. 09:00 – 13:00 Uhr</p>
-                    <p className="text-sm text-muted-foreground mt-1">(Bitte immer um Terminabsprache!)</p>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span>Montag - Freitag</span>
+                    <span>9:00 – 17:00 Uhr</span>
                   </div>
+                  <div className="flex justify-between">
+                    <span>Samstag</span>
+                    <span>09:00 – 13:00 Uhr</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground mt-4 text-center italic">
+                    (Bitte immer um Terminabsprache!)
+                  </p>
                 </div>
               </div>
             </div>
           </Card>
-          
+
           {/* Karte - 2/3 Breite */}
           <Card className="p-6 lg:col-span-2 h-[500px]">
             <iframe
