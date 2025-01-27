@@ -15,7 +15,7 @@ import {
   DialogDescription,
   DialogHeader,
 } from "@/components/ui/dialog";
-import { CarPurchaseForm } from '@/components/CarPurchaseForm';
+import { CarPurchaseForm } from '@/components/PurchaseForm';
 import Link from 'next/link';
 
 export default function Hero1() {
