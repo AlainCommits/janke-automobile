@@ -53,7 +53,10 @@ export default async function HomePage() {
               Jetzt Fahrzeuge entdecken
             </Link>
           </Button>
-          <ContactTooltips />
+          <div className="pt-10">
+            <ContactTooltips />
+          </div>
+          
         </div>
       </section>
       <ImageSliderSection />

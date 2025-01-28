@@ -50,7 +50,7 @@ export function ContactSection() {
               </div>
 
               {/* Contact Tooltips */}
-              <div className="py-6">
+              <div className="">
                 <ContactTooltips />
               </div>
 
@@ -63,7 +63,7 @@ export function ContactSection() {
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span>Montag - Freitag</span>
-                    <span>9:00 – 17:00 Uhr</span>
+                    <span>09:00 – 17:00 Uhr</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Samstag</span>

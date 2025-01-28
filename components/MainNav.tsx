@@ -1,5 +1,4 @@
-// /Users/alonondanse/janke-auto/components/MainNav.tsx
-
+//Users/alonondanse/janke-auto/components/MainNav.tsx
 "use client"
 
 import { useState, useEffect } from 'react';
@@ -7,8 +6,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { HoverBorderGradient } from '@/components/ui/hover-border-gradient';
 import { Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const navItems = [
   { title: "Start", href: "/" },
@@ -23,6 +22,7 @@ export function MainNav() {
   const pathname = usePathname();
   const [isSticky, setIsSticky] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,7 +39,7 @@ export function MainNav() {
 
   return (
     <>
-      {/* Logo Stripe - immer sticky */}
+      {/* Logo Stripe - bleibt unverändert */}
       <div className="fixed top-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-sm z-50 border-b">
         <div className="container mx-auto w-28 md:w-48 h-full flex items-center justify-center px-4">
           <Link href="/" className="relative w-48 h-12">
@@ -66,39 +66,47 @@ export function MainNav() {
         </div>
       </div>
 
-      {/* Hauptnavigation */}
+      {/* Neue untere Navigation */}
       <nav className={cn(
-        "w-full bg-white/95 backdrop-blur-sm border-b transition-all duration-300",
+        "w-full bg-gray-900/95 backdrop-blur-sm border-b border-red-500/20 transition-all duration-300",
         isSticky 
           ? "fixed top-16 left-0 right-0 z-40" 
           : isOpen 
-            ? "fixed top-16 left-0 right-0 z-40" // Mobile menu when open
-            : "absolute top-[90dvh] left-0 right-0 z-40", // Desktop initial position
+            ? "fixed top-16 left-0 right-0 z-40"
+            : "absolute top-[90dvh] left-0 right-0 z-40",
         isOpen ? "block" : "hidden lg:block"
       )}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center h-auto lg:h-16">
-            <ul className="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0 lg:space-x-2 py-4 lg:py-0 w-full lg:w-auto">
-              {navItems.map((item) => (
-                <li key={item.href} className="w-full lg:w-auto">
-                  <HoverBorderGradient
-                    containerClassName={cn(
-                      "rounded-md transition-all duration-300 hover:scale-110 w-full lg:w-auto",
-                      pathname === item.href && "shadow-[0_0_50px_rgba(191,30,44,0.6)]"
-                    )}
+            <ul className="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0 lg:space-x-6 py-4 lg:py-0 w-full lg:w-auto">
+              {navItems.map((item, idx) => (
+                <li key={item.href} className="w-full lg:w-auto relative">
+                  <Link 
+                    href={item.href}
                     className={cn(
-                      "px-4 py-2 text-sm font-medium transition-all duration-300 text-center lg:text-left",
-                      pathname === item.href 
-                        ? "text-[#BF1E2C]" 
-                        : "text-slate-200",
-                      "hover:text-[#BF1E2C]"
+                      "block px-4 py-2 text-gray-400 transition-colors relative group",
+                      pathname === item.href && "text-white"
                     )}
-                    duration={0.5}
+                    onClick={() => setIsOpen(false)}
+                    onMouseEnter={() => setHoveredIndex(idx)}
+                    onMouseLeave={() => setHoveredIndex(null)}
                   >
-                    <Link href={item.href} className="block w-full" onClick={() => setIsOpen(false)}>
-                      {item.title}
-                    </Link>
-                  </HoverBorderGradient>
+                    <span className="relative z-10">{item.title}</span>
+                    <AnimatePresence>
+                      {hoveredIndex === idx && (
+                        <motion.div
+                          className="absolute bottom-0 left-0 w-full h-px"
+                          initial={{ width: "0%" }}
+                          animate={{ width: "100%" }}
+                          exit={{ width: "0%" }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <div className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-red-500 to-transparent" />
+                          <div className="absolute left-0 w-[40%] h-px bg-gradient-to-r from-transparent via-red-600 to-transparent" />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </Link>
                 </li>
               ))}
             </ul>

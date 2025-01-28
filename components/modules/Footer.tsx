@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { ContactTooltips } from '@/components/ContactTooltip';
+import { OpeningHours } from '@/components/OpeningHours';
 
 const navItems = [
   { title: "Start", href: "/" },
@@ -18,24 +19,25 @@ export function Footer() {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* Logo und Beschreibung */}
-          <div className="space-y-4">
-            <div className="relative w-48 h-24">
+          <div className="flex flex-col items-center lg:items-start">
+            <div className="relative w-24 h-24 md:w-48 md:h-48">
               <Image
                 src="/images/logo.jpg"
                 alt="Logo"
                 fill
-                className="object-contain brightness-0 invert"
+                className="object-contain"
+                priority
               />
             </div>
-            <p className="text-gray-400">
+            <p className="text-gray-400 mt-4 text-center lg:text-left">
               Ihr vertrauenswürdiger Partner für Gebrauchtwagen in Bochum
             </p>
           </div>
 
           {/* Navigation */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-bold">Navigation</h3>
-            <ul className="space-y-2">
+          <div>
+            <h3 className="text-lg font-bold text-center lg:text-left">Navigation</h3>
+            <ul className="grid grid-cols-2 gap-2 text-sm mt-4">
               {navItems.map((item) => (
                 <li key={item.href}>
                   <Link 
@@ -49,40 +51,28 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Kontakt */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-bold">Kontakt</h3>
-            <div className="mt-4">
-              <ContactTooltips />
-            </div>
+          {/* Öffnungszeiten */}
+          <div>
+            <h3 className="text-lg font-bold text-center lg:text-left mb-4">Öffnungszeiten</h3>
+            <OpeningHours />
           </div>
 
-          {/* Öffnungszeiten */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-bold">Öffnungszeiten</h3>
-            <div className="space-y-2 text-gray-400">
-              <div className="flex justify-between">
-                <span>Mo. – Fr.</span>
-                <span>9:00 – 17:00</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Sa.</span>
-                <span>09:00 – 13:00</span>
-              </div>
-              <p className="text-sm italic mt-2">
-                (Bitte um Terminabsprache)
-              </p>
+          {/* Kontakt */}
+          <div>
+            <h3 className="text-lg font-bold text-center lg:text-left mb-4">Kontakt</h3>
+            <div className="flex justify-center lg:justify-start">
+              <ContactTooltips />
             </div>
           </div>
         </div>
 
         {/* Unterer Bereich */}
         <div className="pt-8 mt-8 border-t border-gray-800">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-gray-400 text-sm">
               © {new Date().getFullYear()} Janke Automobile. Alle Rechte vorbehalten.
             </div>
-            <div className="flex gap-4 justify-start md:justify-end">
+            <div className="flex gap-6">
               <Link href="/impressum" className="text-gray-400 hover:text-red-500 text-sm">
                 Impressum
               </Link>
