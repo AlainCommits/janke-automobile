@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ContactTooltips } from './ContactTooltip';
 
 const navItems = [
   { title: "Start", href: "/" },
@@ -66,9 +67,9 @@ export function MainNav() {
         </div>
       </div>
 
-      {/* Neue untere Navigation */}
+      {/* Mobile Navigation */}
       <nav className={cn(
-        "w-full bg-gray-900/95 backdrop-blur-sm border-b border-red-500/20 transition-all duration-300",
+        "w-full bg-gray-900/95 backdrop-blur-sm transition-all duration-300",
         isSticky 
           ? "fixed top-16 left-0 right-0 z-40" 
           : isOpen 
@@ -77,40 +78,104 @@ export function MainNav() {
         isOpen ? "block" : "hidden lg:block"
       )}>
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-center h-auto lg:h-16">
-            <ul className="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0 lg:space-x-6 py-4 lg:py-0 w-full lg:w-auto">
-              {navItems.map((item, idx) => (
-                <li key={item.href} className="w-full lg:w-auto relative">
-                  <Link 
-                    href={item.href}
-                    className={cn(
-                      "block px-4 py-2 text-gray-400 transition-colors relative group",
-                      pathname === item.href && "text-white"
-                    )}
-                    onClick={() => setIsOpen(false)}
-                    onMouseEnter={() => setHoveredIndex(idx)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                  >
-                    <span className="relative z-10">{item.title}</span>
-                    <AnimatePresence>
-                      {hoveredIndex === idx && (
-                        <motion.div
-                          className="absolute bottom-0 left-0 w-full h-px"
-                          initial={{ width: "0%" }}
-                          animate={{ width: "100%" }}
-                          exit={{ width: "0%" }}
-                          transition={{ duration: 0.2 }}
-                        >
+          {/* Mobile Menu */}
+          {isOpen && (
+            <div className="py-6 flex flex-col items-center">
+              {/* Logo */}
+              <div className="relative w-40 h-20 mb-8">
+                <Image
+                  src="/images/logo.jpg"
+                  alt="Logo"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
+
+              {/* Navigation Links */}
+              <div className="bg-gray-800/50 rounded-lg p-4 w-full max-w-sm mb-8">
+                <div className="grid grid-cols-2 gap-2">
+                  {navItems.slice(0, 3).map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className={cn(
+                        "flex items-center justify-between border-b border-gray-700 pb-2 text-gray-400 hover:text-white transition-colors relative group",
+                        pathname === item.href && "text-white"
+                      )}
+                    >
+                      <span>{item.title}</span>
+                      {pathname === item.href && (
+                        <div className="absolute bottom-0 left-0 w-full h-px">
                           <div className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-red-500 to-transparent" />
                           <div className="absolute left-0 w-[40%] h-px bg-gradient-to-r from-transparent via-red-600 to-transparent" />
-                        </motion.div>
+                        </div>
                       )}
-                    </AnimatePresence>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+                    </Link>
+                  ))}
+                  {navItems.slice(3).map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className={cn(
+                        "flex items-center justify-between border-b border-gray-700 pb-2 text-gray-400 hover:text-white transition-colors relative group",
+                        pathname === item.href && "text-white"
+                      )}
+                    >
+                      <span>{item.title}</span>
+                      {pathname === item.href && (
+                        <div className="absolute bottom-0 left-0 w-full h-px">
+                          <div className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-red-500 to-transparent" />
+                          <div className="absolute left-0 w-[40%] h-px bg-gradient-to-r from-transparent via-red-600 to-transparent" />
+                        </div>
+                      )}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Contact Tooltips */}
+              <div className="mt-4">
+                <ContactTooltips />
+              </div>
+            </div>
+          )}
+
+          {/* Desktop Navigation */}
+          {!isOpen && (
+            <div className="hidden lg:flex items-center justify-center h-16">
+              <ul className="flex items-center space-x-2">
+                {navItems.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className={cn(
+                        "px-4 py-2 text-gray-400 hover:text-white transition-colors relative group",
+                        pathname === item.href && "text-white"
+                      )}
+                    >
+                      <span>{item.title}</span>
+                      <AnimatePresence>
+                        {pathname === item.href && (
+                          <motion.div
+                            className="absolute bottom-0 left-0 w-full h-px"
+                            initial={{ width: "0%" }}
+                            animate={{ width: "100%" }}
+                            exit={{ width: "0%" }}
+                          >
+                            <div className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-red-500 to-transparent" />
+                            <div className="absolute left-0 w-[40%] h-px bg-gradient-to-r from-transparent via-red-600 to-transparent" />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </nav>
     </>

@@ -1,8 +1,14 @@
-//Users/alonondanse/janke-auto/components/Footer.tsx
+//Users/alonondanse/janke-auto/components/MainNav.tsx
+"use client"
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import { Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ContactTooltips } from '@/components/ContactTooltip';
-import { OpeningHours } from '@/components/OpeningHours';
 
 const navItems = [
   { title: "Start", href: "/" },
@@ -13,79 +19,165 @@ const navItems = [
   { title: "Fahrzeuge", href: "/#fahrzeuge" },
 ];
 
-export function Footer() {
+export function MainNav() {
+  const pathname = usePathname();
+  const [isSticky, setIsSticky] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const firstSection = document.querySelector('section');
+      if (firstSection) {
+        const sectionBottom = firstSection.getBoundingClientRect().bottom;
+        setIsSticky(sectionBottom <= 64);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <footer className="bg-gray-900 text-white py-12 border-t-2 border-red-500">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-          {/* Logo und Beschreibung */}
-          <div className="flex flex-col items-center lg:items-start">
-            <div className="relative w-24 h-24 md:w-48 md:h-48">
-              <Image
-                src="/images/logo.jpg"
-                alt="Logo"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
-            <p className="text-gray-400 mt-4 text-center lg:text-left">
-              Ihr vertrauenswürdiger Partner für Gebrauchtwagen in Bochum
-            </p>
-          </div>
-
-          {/* Navigation */}
-          <div>
-            <h3 className="text-lg font-bold text-center lg:text-left">Navigation</h3>
-            <ul className="grid grid-cols-2 gap-2 text-sm mt-4">
-              {navItems.map((item) => (
-                <li key={item.href}>
-                  <Link 
-                    href={item.href}
-                    className="text-gray-400 hover:text-red-500 transition-colors"
-                  >
-                    {item.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Öffnungszeiten */}
-          <div>
-            <h3 className="text-lg font-bold text-center lg:text-left mb-4">Öffnungszeiten</h3>
-            <OpeningHours />
-          </div>
-
-          {/* Kontakt */}
-          <div>
-            <h3 className="text-lg font-bold text-center lg:text-left mb-4">Kontakt</h3>
-            <div className="flex justify-center lg:justify-start">
-              <ContactTooltips />
-            </div>
-          </div>
-        </div>
-
-        {/* Unterer Bereich */}
-        <div className="pt-8 mt-8 border-t border-gray-800">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="text-gray-400 text-sm">
-              © {new Date().getFullYear()} Janke Automobile. Alle Rechte vorbehalten.
-            </div>
-            <div className="flex gap-6">
-              <Link href="/impressum" className="text-gray-400 hover:text-red-500 text-sm">
-                Impressum
-              </Link>
-              <Link href="/datenschutz" className="text-gray-400 hover:text-red-500 text-sm">
-                Datenschutz
-              </Link>
-              <Link href="/agb" className="text-gray-400 hover:text-red-500 text-sm">
-                AGB
-              </Link>
-            </div>
-          </div>
+    <>
+      {/* Logo Stripe - bleibt unverändert */}
+      <div className="fixed top-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-sm z-50 border-b">
+        <div className="container mx-auto w-28 md:w-48 h-full flex items-center justify-center px-4">
+          <Link href="/" className="relative w-48 h-12">
+            <Image
+              src="/images/logo.png"
+              alt="Logo"
+              fill
+              className="object-cover md:object-contain"
+              priority
+            />
+          </Link>
+          
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="lg:hidden p-2 hover:bg-gray-100 rounded-md"
+            aria-label="Toggle menu"
+          >
+            {isOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </button>
         </div>
       </div>
-    </footer>
+
+      {/* Mobile Navigation */}
+      <nav className={cn(
+        "w-full bg-gray-900/95 backdrop-blur-sm transition-all duration-300",
+        isSticky 
+          ? "fixed top-16 left-0 right-0 z-40" 
+          : isOpen 
+            ? "fixed top-16 left-0 right-0 z-40"
+            : "absolute top-[90dvh] left-0 right-0 z-40",
+        isOpen ? "block" : "hidden lg:block"
+      )}>
+        <div className="container mx-auto px-4">
+          {/* Mobile Menu */}
+          {isOpen && (
+            <div className="py-6 flex flex-col items-center">
+              {/* Logo */}
+              <div className="relative w-40 h-20 mb-8">
+                <Image
+                  src="/images/logo.jpg"
+                  alt="Logo"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
+
+              {/* Navigation Links */}
+              <div className="bg-gray-800/50 rounded-lg p-4 w-full max-w-sm mb-8">
+                <div className="grid grid-cols-2 gap-2">
+                  {navItems.slice(0, 3).map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className={cn(
+                        "flex items-center justify-between border-b border-gray-700 pb-2 text-gray-400 hover:text-white transition-colors relative group",
+                        pathname === item.href && "text-white"
+                      )}
+                    >
+                      <span>{item.title}</span>
+                      {pathname === item.href && (
+                        <div className="absolute bottom-0 left-0 w-full h-px">
+                          <div className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-red-500 to-transparent" />
+                          <div className="absolute left-0 w-[40%] h-px bg-gradient-to-r from-transparent via-red-600 to-transparent" />
+                        </div>
+                      )}
+                    </Link>
+                  ))}
+                  {navItems.slice(3).map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className={cn(
+                        "flex items-center justify-between border-b border-gray-700 pb-2 text-gray-400 hover:text-white transition-colors relative group",
+                        pathname === item.href && "text-white"
+                      )}
+                    >
+                      <span>{item.title}</span>
+                      {pathname === item.href && (
+                        <div className="absolute bottom-0 left-0 w-full h-px">
+                          <div className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-red-500 to-transparent" />
+                          <div className="absolute left-0 w-[40%] h-px bg-gradient-to-r from-transparent via-red-600 to-transparent" />
+                        </div>
+                      )}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Contact Tooltips */}
+              <div className="mt-4">
+                <ContactTooltips />
+              </div>
+            </div>
+          )}
+
+          {/* Desktop Navigation */}
+          {!isOpen && (
+            <div className="hidden lg:flex items-center justify-center h-16">
+              <ul className="flex items-center space-x-2">
+                {navItems.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className={cn(
+                        "px-4 py-2 text-gray-400 hover:text-white transition-colors relative group",
+                        pathname === item.href && "text-white"
+                      )}
+                    >
+                      <span>{item.title}</span>
+                      <AnimatePresence>
+                        {pathname === item.href && (
+                          <motion.div
+                            className="absolute bottom-0 left-0 w-full h-px"
+                            initial={{ width: "0%" }}
+                            animate={{ width: "100%" }}
+                            exit={{ width: "0%" }}
+                          >
+                            <div className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-red-500 to-transparent" />
+                            <div className="absolute left-0 w-[40%] h-px bg-gradient-to-r from-transparent via-red-600 to-transparent" />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </nav>
+    </>
   );
 }
