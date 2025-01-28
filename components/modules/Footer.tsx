@@ -44,7 +44,7 @@ export function Footer() {
                     <Link
                       key={item.href}
                       href={item.href}
-                      className="flex items-center justify-between border-b border-gray-700 pb-2 text-gray-400 hover:text-white transition-colors"
+                      className="flex items-center justify-between border-b border-gray-700 pb-2 text-gray-400 hover:text-white transition-colors ."
                     >
                       {item.title}
                     </Link>
