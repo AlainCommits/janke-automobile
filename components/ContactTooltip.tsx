@@ -96,21 +96,21 @@ export const contactItems = [
   {
     id: 2,
     name: "Telefon",
-    designation: "+49 123 456789",
+    designation: "+49 178 468 4141",
     icon: <Phone className="w-5 h-5 text-red-500" />,
-    href: "tel:+49123456789"
+    href: "tel:+49 178 468 4141"
   },
   {
     id: 3,
     name: "E-Mail",
     designation: "info@janke-automobile.de",
     icon: <Mail className="w-5 h-5 text-red-500" />,
-    href: "mailto:info@janke-automobile.de"
+    href: "mailto:janke-automobile@hotmail.de"
   },
   {
     id: 4,
-    name: "WhatsApp (+49 178 468 4141)",
-    designation: "Direkt chatten",
+    name: "WhatsApp",
+    designation: "Direkt chatten (+49 178 468 4141)",
     icon: (
       <div className="relative w-5 h-5">
         <Image
