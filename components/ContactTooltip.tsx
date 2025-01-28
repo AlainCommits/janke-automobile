@@ -108,9 +108,9 @@ export const contactItems = [
     href: "mailto:info@janke-automobile.de"
   },
   {
-    id: 5,
-    name: "AutoScout24",
-    designation: "Unser Händlerprofil",
+    id: 4,
+    name: "WhatsApp (+49 178 468 4141)",
+    designation: "Direkt chatten",
     icon: (
       <div className="relative w-5 h-5">
         <Image
@@ -121,7 +121,7 @@ export const contactItems = [
         />
       </div>
     ),
-    href: "https://wa.me/49123456789"  
+    href: "https://wa.me/491784684141"  
   },
   {
     id: 5,
@@ -130,7 +130,7 @@ export const contactItems = [
     icon: (
       <div className="relative w-5 h-5">
         <Image
-          src="/images/autoscout24.png"
+          src="/images/autoscout.png"
           alt="AutoScout24"
           fill
           className="object-contain"
