@@ -103,7 +103,7 @@ export const contactItems = [
   {
     id: 3,
     name: "E-Mail",
-    designation: "info@janke-automobile.de",
+    designation: "janke-automobile@hotmail.de",
     icon: <Mail className="w-5 h-5 text-red-500" />,
     href: "mailto:janke-automobile@hotmail.de"
   },
