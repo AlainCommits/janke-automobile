@@ -90,12 +90,6 @@ export function ContactSection() {
             />
           </Card>
         </div>
-
-        <div className="text-center mt-12">
-          <AnimatedButton>
-            Jetzt Termin vereinbaren
-          </AnimatedButton>
-        </div>
       </div>
     </section>
   );

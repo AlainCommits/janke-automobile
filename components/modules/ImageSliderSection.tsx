@@ -23,7 +23,7 @@ const images = [
 
 export function ImageSliderSection() {
   return (
-    <section className="py-12 md:py-24 overflow-hidden mx-auto bg-primary border-b-2 border-red-500">
+    <section className="py-12 md:py-24 overflow-hidden mx-auto bg-gray-900/95 border-b-2 border-red-500">
       <div className="container-fluid mx-auto">
         <div className="flex overflow-hidden relative">
           <div className="flex gap-4 animate-scroll whitespace-nowrap">

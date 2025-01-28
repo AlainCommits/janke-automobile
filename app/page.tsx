@@ -40,7 +40,7 @@ export default async function HomePage() {
       </section> */}
 
       {/* CTA Section */}
-      <section id="galerie" className="py-16 bg-primary text-white border-t-2 border-b-2 border-red-500">
+      <section id="galerie" className="py-16 bg-gray-900/95 text-white border-t-2 border-b-2 border-red-500">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-6">
             Bereit, Ihr Traumauto zu finden?

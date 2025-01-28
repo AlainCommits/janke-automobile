@@ -40,12 +40,12 @@ export function MainNav() {
 
   return (
     <>
-      {/* Logo Stripe - bleibt unverändert */}
+      {/* Logo Stripe */}
       <div className="fixed top-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-sm z-50 border-b">
         <div className="container mx-auto w-28 md:w-48 h-full flex items-center justify-center px-4">
           <Link href="/" className="relative w-48 h-12">
             <Image
-              src="/images/logo.png"
+              src="/images/logo.jpg"
               alt="Logo"
               fill
               className="object-cover md:object-contain"
@@ -67,7 +67,7 @@ export function MainNav() {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Navigation */}
       <nav className={cn(
         "w-full bg-gray-900/95 backdrop-blur-sm transition-all duration-300",
         isSticky 
@@ -80,7 +80,7 @@ export function MainNav() {
         <div className="container mx-auto px-4">
           {/* Mobile Menu */}
           {isOpen && (
-            <div className="py-6 flex flex-col items-center">
+            <div className="lg:hidden py-6 flex flex-col items-center">
               {/* Logo */}
               <div className="relative w-40 h-20 mb-8">
                 <Image
@@ -93,47 +93,23 @@ export function MainNav() {
               </div>
 
               {/* Navigation Links */}
-              <div className="bg-gray-800/50 rounded-lg p-4 w-full max-w-sm mb-8">
-                <div className="grid grid-cols-2 gap-2">
-                  {navItems.slice(0, 3).map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setIsOpen(false)}
-                      className={cn(
-                        "flex items-center justify-between border-b border-gray-700 pb-2 text-gray-400 hover:text-white transition-colors relative group",
-                        pathname === item.href && "text-white"
-                      )}
-                    >
-                      <span>{item.title}</span>
-                      {pathname === item.href && (
-                        <div className="absolute bottom-0 left-0 w-full h-px">
-                          <div className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-red-500 to-transparent" />
-                          <div className="absolute left-0 w-[40%] h-px bg-gradient-to-r from-transparent via-red-600 to-transparent" />
-                        </div>
-                      )}
-                    </Link>
-                  ))}
-                  {navItems.slice(3).map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setIsOpen(false)}
-                      className={cn(
-                        "flex items-center justify-between border-b border-gray-700 pb-2 text-gray-400 hover:text-white transition-colors relative group",
-                        pathname === item.href && "text-white"
-                      )}
-                    >
-                      <span>{item.title}</span>
-                      {pathname === item.href && (
-                        <div className="absolute bottom-0 left-0 w-full h-px">
-                          <div className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-red-500 to-transparent" />
-                          <div className="absolute left-0 w-[40%] h-px bg-gradient-to-r from-transparent via-red-600 to-transparent" />
-                        </div>
-                      )}
-                    </Link>
-                  ))}
-                </div>
+              <div className="flex flex-col items-center space-y-4 w-full max-w-xs mb-8">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    className="relative text-gray-400 hover:text-white transition-colors py-2 text-center"
+                  >
+                    <span>{item.title}</span>
+                    {pathname === item.href && (
+                      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 h-px">
+                        <div className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-red-500 to-transparent" />
+                        <div className="absolute left-0 w-[40%] h-px bg-gradient-to-r from-transparent via-red-600 to-transparent" />
+                      </div>
+                    )}
+                  </Link>
+                ))}
               </div>
 
               {/* Contact Tooltips */}
@@ -143,39 +119,37 @@ export function MainNav() {
             </div>
           )}
 
-          {/* Desktop Navigation */}
-          {!isOpen && (
-            <div className="hidden lg:flex items-center justify-center h-16">
-              <ul className="flex items-center space-x-2">
-                {navItems.map((item) => (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      className={cn(
-                        "px-4 py-2 text-gray-400 hover:text-white transition-colors relative group",
-                        pathname === item.href && "text-white"
+          {/* Desktop Navigation - Unverändert */}
+          <div className="hidden lg:flex items-center justify-center h-16">
+            <ul className="flex items-center space-x-2">
+              {navItems.map((item, idx) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="px-4 py-2 text-gray-400 hover:text-white transition-colors relative group"
+                    onMouseEnter={() => setHoveredIndex(idx)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                  >
+                    <span>{item.title}</span>
+                    <AnimatePresence>
+                      {hoveredIndex === idx && (
+                        <motion.div
+                          className="absolute bottom-0 left-0 w-full h-px"
+                          initial={{ width: "0%" }}
+                          animate={{ width: "100%" }}
+                          exit={{ width: "0%" }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <div className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-red-500 to-transparent" />
+                          <div className="absolute left-0 w-[40%] h-px bg-gradient-to-r from-transparent via-red-600 to-transparent" />
+                        </motion.div>
                       )}
-                    >
-                      <span>{item.title}</span>
-                      <AnimatePresence>
-                        {pathname === item.href && (
-                          <motion.div
-                            className="absolute bottom-0 left-0 w-full h-px"
-                            initial={{ width: "0%" }}
-                            animate={{ width: "100%" }}
-                            exit={{ width: "0%" }}
-                          >
-                            <div className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-red-500 to-transparent" />
-                            <div className="absolute left-0 w-[40%] h-px bg-gradient-to-r from-transparent via-red-600 to-transparent" />
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+                    </AnimatePresence>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </nav>
     </>
