@@ -30,14 +30,14 @@ export function ContactSection() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {/* Linke Seite mit Logo, Tooltips und Öffnungszeiten */}
           <Card className="relative overflow-hidden">
-            <div className="absolute inset-0 z-0">
+            {/* <div className="absolute inset-0 z-0">
               <Image
-                src="/images/contact-bg.jpg"
+                src="/images/logo.png"
                 alt="Contact background"
                 fill
                 className="object-cover opacity-20"
               />
-            </div>
+            </div> */}
             <div className="relative z-10 p-8 backdrop-blur-sm space-y-8">
               {/* Logo */}
               <div className="relative w-48 h-24 mx-auto">

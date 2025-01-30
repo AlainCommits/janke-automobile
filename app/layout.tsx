@@ -5,6 +5,8 @@ import { GradientBorderNav } from '../components/navigation/NavVariants';
 import { Footer } from "@/components/modules/Footer";
 import { Analytics } from "@vercel/analytics/react"
 import { MainNav } from "@/components/MainNav";
+import { Toaster } from 'sonner';
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +35,7 @@ export default function RootLayout({
       >
               {/* <GradientBorderNav /> */}
         <main className="min-h-screen">
+        <Toaster position="top-center" />
 
           {children}
           <Analytics />

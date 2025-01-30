@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { carService } from '@/lib/mock';
+import { toast } from 'sonner';
 import {
   Dialog,
   DialogContent,
@@ -21,6 +22,7 @@ import Link from 'next/link';
 export default function Hero1() {
   const cars = carService.getAllCars();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -30,9 +32,37 @@ export default function Hero1() {
     return () => clearInterval(timer);
   }, [cars.length]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted");
+    setIsSubmitting(true);
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    
+    const data = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      phone: formData.get('phone'),
+    };
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) throw new Error('Fehler beim Senden');
+      
+      toast.success('Nachricht erfolgreich gesendet');
+      form.reset();
+    } catch (error) {
+      toast.error('Fehler beim Senden. Bitte versuchen Sie es erneut.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -128,6 +158,7 @@ export default function Hero1() {
                     <Label htmlFor="name">Name</Label>
                     <Input 
                       id="name"
+                      name="name"
                       placeholder="Ihr Name"
                       className="mt-1"
                     />
@@ -136,6 +167,7 @@ export default function Hero1() {
                     <Label htmlFor="email">E-Mail</Label>
                     <Input 
                       id="email"
+                      name="email"
                       type="email"
                       placeholder="ihre@email.de"
                       className="mt-1"
@@ -145,6 +177,7 @@ export default function Hero1() {
                     <Label htmlFor="phone">Telefon</Label>
                     <Input 
                       id="phone"
+                      name="phone"
                       type="tel"
                       placeholder="Ihre Telefonnummer"
                       className="mt-1"
@@ -155,8 +188,9 @@ export default function Hero1() {
                 <Button 
                   type="submit"
                   className="w-full bg-red-600 hover:bg-red-700"
+                  disabled={isSubmitting}
                 >
-                  Jetzt kontaktieren
+                  {isSubmitting ? 'Wird gesendet...' : 'Jetzt kontaktieren'}
                 </Button>
 
                 <p className="text-xs text-gray-500 text-center">
@@ -242,6 +276,7 @@ export default function Hero1() {
                         <Label htmlFor="name-mobile">Name</Label>
                         <Input 
                           id="name-mobile"
+                          name="name"
                           placeholder="Ihr Name"
                           className="mt-1"
                         />
@@ -250,6 +285,7 @@ export default function Hero1() {
                         <Label htmlFor="email-mobile">E-Mail</Label>
                         <Input 
                           id="email-mobile"
+                          name="email"
                           type="email"
                           placeholder="ihre@email.de"
                           className="mt-1"
@@ -259,6 +295,7 @@ export default function Hero1() {
                         <Label htmlFor="phone-mobile">Telefon</Label>
                         <Input 
                           id="phone-mobile"
+                          name="phone"
                           type="tel"
                           placeholder="Ihre Telefonnummer"
                           className="mt-1"
@@ -268,8 +305,9 @@ export default function Hero1() {
                     <Button 
                       type="submit"
                       className="w-full bg-red-600 hover:bg-red-700"
+                      disabled={isSubmitting}
                     >
-                      Jetzt kontaktieren
+                      {isSubmitting ? 'Wird gesendet...' : 'Jetzt kontaktieren'}
                     </Button>
                   </form>
                 </DialogContent>

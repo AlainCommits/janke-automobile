@@ -1,4 +1,4 @@
-//Users/alonondanse/janke-auto/components/CarPurchaseForm.tsx
+//Users/alonondanse/janke-auto/components/PurchaseForm.tsx
 "use client"
 
 import React from 'react';
@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 import {
   Form,
   FormControl,
@@ -15,7 +16,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 
 const formSchema = z.object({
@@ -53,7 +53,22 @@ export function CarPurchaseForm() {
   });
 
   async function onSubmit(values: FormValues) {
-    console.log(values);
+    try {
+      const response = await fetch('/api/purchase', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
+
+      if (!response.ok) throw new Error('Fehler beim Senden');
+      
+      toast.success('Anfrage erfolgreich gesendet');
+      form.reset();
+    } catch (error) {
+      toast.error('Fehler beim Senden. Bitte versuchen Sie es erneut.');
+    }
   }
 
   return (
@@ -226,8 +241,9 @@ export function CarPurchaseForm() {
         <Button 
           type="submit" 
           className="w-full bg-red-600 hover:bg-red-700 text-white"
+          disabled={form.formState.isSubmitting}
         >
-          Unverbindlich senden
+          {form.formState.isSubmitting ? 'Wird gesendet...' : 'Unverbindlich senden'}
         </Button>
       </form>
     </Form>
